@@ -1,4 +1,14 @@
-import { ArrowRight, Clock3, FileText, LayoutTemplate, PlayCircle, Search } from "@/ui/icons/lucide";
+import {
+  ArrowRight,
+  BookOpen,
+  Clock3,
+  FileText,
+  LayoutTemplate,
+  PlayCircle,
+  Search,
+  Sparkles,
+} from "@/ui/icons/lucide";
+import { cn } from "@/ui/lib/cn";
 import { useTranslations } from "next-intl";
 import { RESOURCE_ITEMS } from "@/entities/marketing/marketing.fixtures";
 import type { ResourceItem, ResourceKind } from "@/entities/marketing/marketing.types";
@@ -37,13 +47,57 @@ const KIND_TARGETS: Record<ResourceItem["key"], string> = {
 
 const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-1";
 
-/** Hero (tint) → guides (canvas) → closing band (brand). */
+const RESOURCE_HERO_STICKERS = [
+  {
+    icon: BookOpen,
+    tile: "bg-tint-amber",
+    position: "top-4 left-4 size-16 rounded-dialog rotate-6",
+    motion: "animate-drift-right-down",
+    delay: "stagger-1",
+  },
+  {
+    icon: Sparkles,
+    tile: "bg-tint-mint",
+    position: "top-1 right-10 size-12 rounded-full -rotate-6",
+    motion: "animate-drift-left-down",
+    delay: "stagger-3",
+  },
+  {
+    icon: FileText,
+    tile: "bg-surface",
+    position: "inset-0 m-auto size-20 rounded-dialog -rotate-3",
+    motion: "animate-drift-center",
+    delay: "stagger-5",
+  },
+  {
+    icon: PlayCircle,
+    tile: "bg-tint-rose",
+    position: "right-4 bottom-4 size-16 rounded-dialog rotate-6",
+    motion: "animate-drift-left-up",
+    delay: "stagger-7",
+  },
+  {
+    icon: LayoutTemplate,
+    tile: "bg-info-subtle",
+    position: "bottom-2 left-14 size-14 rounded-full -rotate-6",
+    motion: "animate-drift-right-up",
+    delay: "stagger-2",
+  },
+] as const;
+
+/** Hero (warm neutral) → guides (canvas) → closing band (brand). */
 export function ResourcesPage() {
   const t = useTranslations("marketing.resources");
 
   return (
     <main>
-      <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("subtitle")} />
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("subtitle")}
+        className="bg-surface-warm"
+        aside={<ResourcesHeroStickers />}
+      />
 
       <Section>
         <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -79,6 +133,27 @@ export function ResourcesPage() {
         }
       />
     </main>
+  );
+}
+
+function ResourcesHeroStickers() {
+  return (
+    <ul aria-hidden className="pointer-events-none relative mx-auto h-44 w-full max-w-sm md:h-56 lg:h-72">
+      {RESOURCE_HERO_STICKERS.map(({ icon, tile, position, motion, delay }) => (
+        <li
+          key={position}
+          className={cn(
+            "absolute grid place-items-center border border-border text-fg-brand",
+            tile,
+            position,
+            motion,
+            delay,
+          )}
+        >
+          <Icon icon={icon} size="md" />
+        </li>
+      ))}
+    </ul>
   );
 }
 

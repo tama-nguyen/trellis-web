@@ -34,11 +34,12 @@ import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { HStack } from "@astryxdesign/core/HStack";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Selector } from "@astryxdesign/core/Selector";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { CourseArtwork } from "../shared/CourseArtwork";
-import { LANGUAGE_TONES } from "../shared/learning.tones";
+import { ENROLLED_TONE, LANGUAGE_TONES } from "../shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 
 type LanguageChip = CourseLanguage | typeof CATALOG_LANGUAGE_FILTER_ALL;
@@ -408,13 +409,22 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
             {durationLabel(course.durationMinutes)}
           </span>
         </div>
-        <Button
-          variant={isEnrolled ? "secondary" : "primary"}
-          className="mt-auto w-full"
-          href={isEnrolled ? ROUTES.learnCourse(course.slug) : ROUTES.catalogCourse(course.slug)}
-          label={isEnrolled ? t("viewCourse") : t("enrol")}
-          endContent={isEnrolled ? undefined : <Icon icon={ArrowRight} size="sm" />}
-        />
+        <HStack
+          gap={3}
+          wrap="wrap"
+          vAlign="center"
+          className={cn("mt-auto w-full", isRow ? "justify-between" : null)}
+        >
+          {isRow && isEnrolled ? <Badge variant={ENROLLED_TONE} label={t("enrolledStatus")} /> : null}
+          <Button
+            variant={isEnrolled ? "secondary" : "primary"}
+            size="md"
+            className={cn("group", isRow ? "ml-auto w-fit min-w-40" : "w-full")}
+            href={isEnrolled ? ROUTES.learnCourse(course.slug) : ROUTES.catalogCourse(course.slug)}
+            label={isEnrolled ? t("viewCourse") : t("enrol")}
+            endContent={isEnrolled ? undefined : <Icon icon={ArrowRight} size="sm" />}
+          />
+        </HStack>
       </div>
     </article>
   );
