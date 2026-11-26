@@ -152,7 +152,14 @@
     "save": "Lưu khoá học",
     "unsave": "Bỏ lưu",
     "emptyTitle": "Không có khoá học nào khớp bộ lọc",
-    "emptyDescription": "Bỏ bớt một bộ lọc hoặc tìm chủ đề khác."
+    "emptyDescription": "Bỏ bớt một bộ lọc hoặc tìm chủ đề khác.",
+    "statusLabel": "Trạng thái khóa học",
+    "allStatuses": "Tất cả trạng thái",
+    "statuses": {
+      "ACTIVE": "Đang hoạt động",
+      "DRAFT": "Bản nháp",
+      "ARCHIVED": "Đã lưu trữ"
+    }
   },
   "player": {
     "breadcrumbLabel": "Đường dẫn",

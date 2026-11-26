@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { CourseCatalogPage } from "@/features/learning/catalog/CourseCatalogPage";
+import { CourseDirectory } from "@/features/learning/catalog/BackendCoursePages";
+import { RequireAuth } from "@/features/auth/guards/RequireAuth";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale }> };
@@ -13,5 +14,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CatalogRoute({ params }: PageProps) {
   setRequestLocale((await params).locale);
-  return <CourseCatalogPage />;
+  return (
+    <RequireAuth>
+      <CourseDirectory />
+    </RequireAuth>
+  );
 }

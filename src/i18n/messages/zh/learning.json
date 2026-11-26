@@ -152,7 +152,14 @@
     "save": "收藏课程",
     "unsave": "取消收藏",
     "emptyTitle": "没有符合筛选条件的课程",
-    "emptyDescription": "请去掉一个筛选条件，或搜索其他主题。"
+    "emptyDescription": "请去掉一个筛选条件，或搜索其他主题。",
+    "statusLabel": "课程状态",
+    "allStatuses": "所有状态",
+    "statuses": {
+      "ACTIVE": "已启用",
+      "DRAFT": "草稿",
+      "ARCHIVED": "已归档"
+    }
   },
   "player": {
     "breadcrumbLabel": "路径导航",

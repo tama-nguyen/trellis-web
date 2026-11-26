@@ -152,7 +152,14 @@
     "save": "Save course",
     "unsave": "Remove from saved",
     "emptyTitle": "No courses match these filters",
-    "emptyDescription": "Clear a filter or search for another topic."
+    "emptyDescription": "Clear a filter or search for another topic.",
+    "statusLabel": "Course status",
+    "allStatuses": "All statuses",
+    "statuses": {
+      "ACTIVE": "Active",
+      "DRAFT": "Draft",
+      "ARCHIVED": "Archived"
+    }
   },
   "player": {
     "breadcrumbLabel": "Breadcrumb",
