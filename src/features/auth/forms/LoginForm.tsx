@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { AUTH_ERROR_MESSAGES } from "@/entities/auth/auth.constants";
 import { useLogin } from "@/entities/auth/auth.queries";
+import { Link } from "@/i18n/navigation";
 import { useRouter } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
 import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
@@ -81,6 +82,8 @@ export function LoginForm() {
         </p>
       ) : null}
       <Button variant="primary" type="submit" size="lg" isLoading={login.isPending} label={t("submit")} />
+      <Link href={ROUTES.register}>{tAll("auth.register.title")}</Link>
+      <Link href={ROUTES.forgotPassword}>{tAll("auth.forgot.title")}</Link>
     </form>
   );
 }

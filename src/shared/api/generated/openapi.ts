@@ -321,14 +321,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/platform/access/grants": {
+    "/api/platform/audit-events": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["grants"];
+        get: operations["search"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/platform/role-grants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["list"];
         put?: never;
         post: operations["grant"];
         delete?: never;
@@ -337,7 +353,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/platform/access/grants/{id}": {
+    "/api/platform/role-grants/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -353,56 +369,10 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/platform/audit-events": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["auditEvents"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AccessGrantPage: {
-            hasNext: boolean;
-            items: components["schemas"]["AccessGrantView"][];
-            nextCursor?: string;
-        };
-        AccessGrantRequest: {
-            /** Format: date-time */
-            expiresAt?: string;
-            role: string;
-            scopeId: string;
-            scopeType: string;
-            subjectId: string;
-            /** @enum {string} */
-            subjectType: "USER" | "SERVICE";
-        };
-        AccessGrantView: {
-            /** Format: date-time */
-            expiresAt?: string;
-            /** Format: date-time */
-            grantedAt: string;
-            grantedBy: string;
-            /** Format: int64 */
-            id: number;
-            role: string;
-            scopeId: string;
-            scopeType: string;
-            subjectId: string;
-            /** @enum {string} */
-            subjectType: "USER" | "SERVICE";
-        };
         ActionTokenRequest: {
             token: string;
         };
@@ -432,14 +402,14 @@ export interface components {
             traceId?: string;
         };
         AuthenticatedUser: {
-            displayName?: string;
-            email?: string;
-            id?: string;
-            permissions?: string[];
+            displayName: string;
+            email: string;
+            id: string;
+            permissions: string[];
         };
         AuthTokens: {
-            accessToken?: string;
-            refreshToken?: string;
+            accessToken: string;
+            refreshToken: string;
         };
         CourseDetailsRequest: {
             description: string;
@@ -570,8 +540,40 @@ export interface components {
             replayed?: number;
         };
         ResetPasswordRequest: {
+            code: string;
+            /** Format: email */
+            email: string;
             newPassword: string;
-            token: string;
+        };
+        RoleGrantPage: {
+            hasNext: boolean;
+            items: components["schemas"]["RoleGrantView"][];
+            nextCursor?: string;
+        };
+        RoleGrantRequest: {
+            /** Format: date-time */
+            expiresAt?: string;
+            role: string;
+            scopeId: string;
+            scopeType: string;
+            subjectId: string;
+            /** @enum {string} */
+            subjectType: "USER" | "SERVICE";
+        };
+        RoleGrantView: {
+            /** Format: date-time */
+            expiresAt?: string;
+            /** Format: date-time */
+            grantedAt: string;
+            grantedBy: string;
+            /** Format: int64 */
+            id: number;
+            role: string;
+            scopeId: string;
+            scopeType: string;
+            subjectId: string;
+            /** @enum {string} */
+            subjectType: "USER" | "SERVICE";
         };
         Violation: {
             code: string;
@@ -1355,7 +1357,44 @@ export interface operations {
             };
         };
     };
-    grants: {
+    search: {
+        parameters: {
+            query?: {
+                actorId?: string;
+                after?: string;
+                aggregateId?: string;
+                aggregateType?: string;
+                first?: number;
+                occurredFrom?: string;
+                occurredTo?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AuditEventPage"];
+                };
+            };
+            /** @description Error (RFC 7807 problem details) */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/problem+json": components["schemas"]["Problem"];
+                };
+            };
+        };
+    };
+    list: {
         parameters: {
             query?: {
                 after?: string;
@@ -1378,7 +1417,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["AccessGrantPage"];
+                    "*/*": components["schemas"]["RoleGrantPage"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1403,7 +1442,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["AccessGrantRequest"];
+                "application/json": components["schemas"]["RoleGrantRequest"];
             };
         };
         responses: {
@@ -1413,7 +1452,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["AccessGrantView"];
+                    "*/*": components["schemas"]["RoleGrantView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1444,43 +1483,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Error (RFC 7807 problem details) */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/problem+json": components["schemas"]["Problem"];
-                };
-            };
-        };
-    };
-    auditEvents: {
-        parameters: {
-            query?: {
-                actorId?: string;
-                after?: string;
-                aggregateId?: string;
-                aggregateType?: string;
-                first?: number;
-                occurredFrom?: string;
-                occurredTo?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["AuditEventPage"];
-                };
             };
             /** @description Error (RFC 7807 problem details) */
             default: {

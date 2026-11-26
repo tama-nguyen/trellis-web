@@ -1,11 +1,11 @@
 "use client";
 
+import { AuthMenu } from "@/features/auth/forms/AuthMenu";
 import { GraduationCap, Menu, Search, X } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/shared/constants/routes";
-import { Button } from "@astryxdesign/core/Button";
 import { Container } from "@/ui/layout/Container";
 import { Icon } from "@astryxdesign/core/Icon";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -93,13 +93,7 @@ export function AppHeader() {
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
-          <Button
-            variant="secondary"
-            className="hidden sm:inline-flex"
-            href={ROUTES.login}
-            label={t("signIn")}
-          />
-          <Button variant="primary" href={ROUTES.login} label={t("getStarted")} />
+          <AuthMenu />
         </div>
       </Container>
 

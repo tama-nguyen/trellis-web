@@ -1,31 +1,27 @@
 import type { ErrorMessageMap } from "@/shared/api/errors";
 
 export const AUTH_API = {
+  REGISTER: "/api/auth/register",
+  VERIFY_EMAIL: "/api/auth/verify-email",
+  FORGOT_PASSWORD: "/api/auth/forgot-password",
+  RESET_PASSWORD: "/api/auth/reset-password",
   LOGIN: "/api/auth/login",
   REFRESH: "/api/auth/refresh",
   LOGOUT: "/api/auth/logout",
   ME: "/api/auth/me",
 } as const;
 
-/**
- * Wire codes of auth failures (problem `code`, SCREAMING_SNAKE like the backend's `ErrorCode`s).
- * Branch on these, never on a literal.
- *
- * UNAUTHENTICATED and ACCESS_DENIED are the backend's `PlatformErrorCode`s. The rest are mock/BFF
- * only until a real auth endpoint exists: the backend is a resource server and answers every
- * token problem with UNAUTHENTICATED; login and refresh happen at the identity provider.
- */
+/** Native identity and platform problem codes; TOKEN_EXPIRED also supports explicit mock mode. */
 export const AUTH_ERRORS = {
-  /** Missing or invalid bearer token (backend). */
   UNAUTHENTICATED: "UNAUTHENTICATED",
-  /** Authenticated but lacking the permission (backend). */
   ACCESS_DENIED: "ACCESS_DENIED",
-  /** Mock only: wrong email or password at the mock login endpoint. */
   INVALID_CREDENTIALS: "INVALID_CREDENTIALS",
-  /** Mock only: the access token expired; the client refreshes and retries. */
   TOKEN_EXPIRED: "TOKEN_EXPIRED",
-  /** Mock only: the refresh token is unknown or revoked; the session ends. */
   REFRESH_TOKEN_INVALID: "REFRESH_TOKEN_INVALID",
+  EMAIL_NOT_VERIFIED: "EMAIL_NOT_VERIFIED",
+  USER_DISABLED: "USER_DISABLED",
+  USER_ALREADY_EXISTS: "USER_ALREADY_EXISTS",
+  ACTION_TOKEN_INVALID: "ACTION_TOKEN_INVALID",
 } as const;
 export type AuthErrorCode = (typeof AUTH_ERRORS)[keyof typeof AUTH_ERRORS];
 
@@ -33,10 +29,18 @@ export type AuthErrorCode = (typeof AUTH_ERRORS)[keyof typeof AUTH_ERRORS];
  * A 401 with one of these means "the access token is stale, refresh and retry". Any other
  * 401 (bad credentials, revoked refresh token) ends the attempt.
  */
-export const REFRESHABLE_AUTH_CODES: readonly string[] = [AUTH_ERRORS.TOKEN_EXPIRED];
+export const REFRESHABLE_AUTH_CODES: readonly string[] = [
+  AUTH_ERRORS.TOKEN_EXPIRED,
+  AUTH_ERRORS.UNAUTHENTICATED,
+];
 
 export const AUTH_ERROR_MESSAGES: ErrorMessageMap = {
   [AUTH_ERRORS.INVALID_CREDENTIALS]: "auth.errors.invalidCredentials",
+  [AUTH_ERRORS.EMAIL_NOT_VERIFIED]: "auth.errors.emailNotVerified",
+  [AUTH_ERRORS.USER_DISABLED]: "auth.errors.userDisabled",
+  [AUTH_ERRORS.USER_ALREADY_EXISTS]: "auth.errors.userAlreadyExists",
+  [AUTH_ERRORS.ACTION_TOKEN_INVALID]: "auth.errors.actionTokenInvalid",
+  [AUTH_ERRORS.REFRESH_TOKEN_INVALID]: "auth.errors.sessionExpired",
 };
 
 /**

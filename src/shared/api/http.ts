@@ -146,7 +146,7 @@ function refreshOnce(adapter: AuthAdapter): Promise<string> {
 }
 
 export async function request<T>(req: FullRequest): Promise<T> {
-  const adapter = req.anonymous ? null : auth;
+  const adapter = req.anonymous || !auth?.getToken() ? null : auth;
   let response = await send(req, adapter?.getToken() ?? null);
   if (response.ok) return (await parseBody(response)) as T;
 
@@ -159,9 +159,14 @@ export async function request<T>(req: FullRequest): Promise<T> {
   let freshToken: string;
   try {
     freshToken = await refreshOnce(adapter);
-  } catch {
-    adapter.onSessionEnd();
-    throw toApiError(response, body);
+  } catch (error) {
+    if (
+      error instanceof ApiError &&
+      (error.status === HTTP_STATUS.UNAUTHORIZED || error.status === HTTP_STATUS.FORBIDDEN)
+    ) {
+      adapter.onSessionEnd();
+    }
+    throw error;
   }
 
   response = await send(req, freshToken);

@@ -4,6 +4,10 @@
  */
 export const ROUTES = {
   home: "/",
+  register: "/register",
+  verifyEmail: "/verify-email",
+  forgotPassword: "/forgot-password",
+  resetPassword: "/reset-password",
   login: "/login",
   account: "/account",
   admin: "/admin",

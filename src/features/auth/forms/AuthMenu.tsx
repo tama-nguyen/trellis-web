@@ -15,6 +15,7 @@ import { Skeleton } from "@astryxdesign/core/Skeleton";
 /** Header area: sign-in link when signed out; account, admin (if permitted) and sign-out when in. */
 export function AuthMenu() {
   const t = useTranslations("common.nav");
+  const tAuth = useTranslations("auth");
   const { tokens, hydrated } = useSession();
   const me = useMe();
   const { can } = useCan();
@@ -24,13 +25,16 @@ export function AuthMenu() {
   if (!hydrated) return <Skeleton className="h-8 w-24" />;
   if (!tokens) {
     return (
-      <Button
-        variant="secondary"
-        size="sm"
-        icon={<Icon icon={LogIn} size="sm" />}
-        href={ROUTES.login}
-        label={t("signIn")}
-      />
+      <div className="flex items-center gap-2">
+        <Button
+          variant="secondary"
+          size="sm"
+          icon={<Icon icon={LogIn} size="sm" />}
+          href={ROUTES.login}
+          label={t("signIn")}
+        />
+        <Button variant="primary" size="sm" href={ROUTES.register} label={tAuth("register.title")} />
+      </div>
     );
   }
 

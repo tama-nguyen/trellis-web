@@ -31,6 +31,8 @@ export function useLogin() {
   return useMutation({
     mutationFn: (payload: LoginPayload) => authApi.login(payload),
     onSuccess: async (tokens) => {
+      await queryClient.cancelQueries();
+      queryClient.removeQueries();
       setTokens(tokens);
       await queryClient.invalidateQueries({ queryKey: authKeys.all });
     },
@@ -47,7 +49,7 @@ export function useLogout() {
     // Sign out locally even if the server call fails: the user asked to leave.
     onSettled: () => {
       setTokens(null);
-      queryClient.clear();
+      queryClient.removeQueries();
     },
   });
 }
