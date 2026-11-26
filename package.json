@@ -28,7 +28,8 @@
     "test:e2e": "playwright test",
     "i18n:check": "node scripts/check-i18n-parity.mjs",
     "budget:check": "node scripts/bundle-budget.mjs",
-    "contracts:check": "node scripts/check-contracts.mjs"
+    "contracts:generate": "node scripts/generate-operations.mjs",
+    "contracts:check": "node scripts/check-contracts.mjs && node scripts/generate-operations.mjs --check"
   },
   "dependencies": {
     "@astryxdesign/cli": "^0.7.16",

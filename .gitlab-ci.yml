@@ -100,7 +100,10 @@ lint:
   stage: lint
   needs: []
   script:
-    # Agreement with the backend's published contracts; nothing is generated in this repo (T22).
+    # Read only the pinned schema and compiler manifests until the contract package is published.
+    - export TRELLIS_BACKEND_DIR="$(mktemp -d)"
+    - node scripts/fetch-contract-inputs.mjs
+    - (cd "$TRELLIS_BACKEND_DIR/contracts/codegen/typescript" && npx --yes pnpm@12.4.1 install --frozen-lockfile)
     - npm run contracts:check
     - npm run typecheck
     - npm run lint

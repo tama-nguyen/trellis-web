@@ -151,19 +151,19 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
 - Paged responses of the real backend are keyset pages, `CursorPage<T>` (`items`, `nextCursor`,
   `hasNext`; request with `first` + `after`). Use `useInfiniteQuery` and a "load more" control: there
   is no page number or total. `Page<T>` (0-based `page`) remains for offset endpoints (admin tables).
-- Writes and integrations use REST (generated client); screen read models may use GraphQL
+- Writes, integrations and simple resource reads use REST. Composed screen read models may use GraphQL
   (`/api/graphql`, typed documents next to the entity, e.g. `entities/notice/notice.graphql.ts`).
 
 ## API contracts (decision T22)
 
-**Nothing is generated in this repo.** `contracts/` belongs to `trellis-backend`, because the
+**Web generates UI operation types.** `contracts/` belongs to `trellis-backend`, because the
 backend produces the OpenAPI document and the GraphQL schema. Its pipeline runs the generators and
 publishes one npm package to the GitLab Package Registry of that project; this repo installs it at
 a pinned, exact version and never copies a schema.
 
 | Thing                               | Where it comes from                                                            |
 | ----------------------------------- | ------------------------------------------------------------------------------ |
-| Package                             | `@trellis/contracts` (OpenAPI client + GraphQL schema and operation types)     |
+| Package                             | `@trellis/contracts` (OpenAPI client and GraphQL schema)                       |
 | Registry                            | trellis-backend's GitLab Package Registry, configured in `.npmrc`              |
 | Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                 |
 | Credentials                         | env only: `$CI_JOB_TOKEN` in CI, a `read_api` PAT locally. **Never committed** |
@@ -176,19 +176,19 @@ a contract change.
 **Until the package exists**, the last generated output stays committed under
 `src/shared/api/generated/` (orval, mutator `shared/api/apiRequest.ts`) and
 `src/shared/graphql/generated/` (@graphql-codegen client-preset, `documentMode: string`) so the repo
-builds on its own. `npm run contracts:check` then only verifies that those files are present and still
-carry their generated header.
+builds on its own. With the backend checkout alongside web and its pinned codegen tools installed,
+`npm run contracts:generate` generates the web operation types. `npm run contracts:check`
+validates documents against the exported schema and compares the generated output.
 
 **What flips when the package is published** (the full list is at the top of
-`scripts/check-contracts.mjs`): add the dependency, delete both generated directories, repoint the
-imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
-generated directories from `.prettierignore` and `eslint.config.mjs`. From then on
+`scripts/check-contracts.mjs`): add the dependency, delete the REST snapshot directory, repoint the
+REST imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
+REST snapshot directory from `.prettierignore` and `eslint.config.mjs`. From then on
 `npm run contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
 
 - **Never edit generated files**, in either state. They are excluded from ESLint and Prettier.
 - A `graphql(...)` document in an entity (`entities/notice/notice.graphql.ts`) is an input to the
-  generator. Once generation lives in the backend, changing a document means changing it there too,
-  then consuming a new contracts version.
+  web generator. Keep UI operation generation in web when switching to the published schema.
 - Generated REST functions call `apiRequest` -> `http.ts`, so the token, refresh, `ApiError` and the
   BFF path apply unchanged; pass React Query's signal as the last argument (`{ signal }`).
 - GraphQL documents are plain strings (no graphql-js in the bundle) run by
@@ -241,7 +241,7 @@ to the backend's stack, so there are exactly two ways to run the UI:
 `problem(path, status, CODE, detail)`, `pageOf(items, page, size, view)` for offset pages, cursor
 pages built like `notice.handlers.ts`, and `guard(request, path, permission?)` for auth. A resource
 the caller may not see (another user's, or a STAFF notice for a non-staff reader) answers **404, not
-403**. The notice domain also mocks `POST /api/graphql` for its detail document. Mocks use the same
+403**. The notice domain also mocks `POST /api/graphql` for its composed detail document. Mocks use the same
 constants as the app, never bare literals. Sample accounts: `mocks/auth.seed.ts` (the member has
 `notice:read`; the admin also `notice:read-staff` and `notice:manage`).
 
