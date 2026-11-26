@@ -3,6 +3,9 @@
  * which has to read and write the same headers and codes the real backend does.
  */
 export const HTTP_HEADERS = {
+  INTERNAL_KEY: "X-Internal-Key",
+  USER_ID: "X-User-Id",
+  CACHE_CONTROL: "Cache-Control",
   AUTHORIZATION: "Authorization",
   CONTENT_TYPE: "Content-Type",
   CONTENT_LENGTH: "Content-Length",
