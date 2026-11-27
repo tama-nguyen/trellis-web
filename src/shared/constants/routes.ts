@@ -7,8 +7,8 @@ export const ROUTES = {
   login: "/login",
   account: "/account",
   admin: "/admin",
-  notices: "/notices",
-  noticeDetail: (noticeCode: string) => `/notices/${encodeURIComponent(noticeCode)}`,
+  notifications: "/notifications",
+  notificationDetail: (notificationCode: string) => `/notifications/${encodeURIComponent(notificationCode)}`,
 
   /** Public marketing pages, reachable from the header without signing in. */
   courses: "/courses",

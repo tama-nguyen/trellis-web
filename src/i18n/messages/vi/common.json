@@ -6,7 +6,7 @@
   "nav": {
     "label": "Điều hướng chính",
     "home": "Trang chủ",
-    "notices": "Thông báo",
+    "notifications": "Thông báo",
     "account": "Tài khoản",
     "admin": "Quản trị",
     "signIn": "Đăng nhập",
@@ -41,7 +41,7 @@
   "welcome": {
     "title": "Điểm khởi đầu vững chắc cho sản phẩm tiếp theo",
     "description": "Trellis có sẵn bộ khung nền tảng: tầng dữ liệu, design system, đa ngôn ngữ, đăng nhập và các cổng kiểm tra chất lượng. Bạn chỉ cần thêm nghiệp vụ.",
-    "ctaNotices": "Xem tính năng mẫu",
+    "ctaNotifications": "Xem tính năng mẫu",
     "ctaSignIn": "Đăng nhập"
   }
 }

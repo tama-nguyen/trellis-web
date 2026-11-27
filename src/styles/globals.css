@@ -17,7 +17,7 @@
 @import "./trellis.css";
 @import "./tokens.css";
 
-/* Long-form text (notice bodies, help pages): `prose`, coloured by our tokens (see .prose-tokens). */
+/* Long-form text (notification bodies, help pages): `prose`, coloured by our tokens (see .prose-tokens). */
 @plugin "@tailwindcss/typography";
 
 /* Class-based dark mode: .dark on <html>, set before paint (see shared/lib/theme.ts). */

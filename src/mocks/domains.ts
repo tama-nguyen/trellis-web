@@ -4,7 +4,7 @@
  */
 export const MOCK_DOMAIN = {
   AUTH: "auth",
-  NOTICE: "notice",
+  NOTIFICATION: "notification",
   CONFIG: "config",
 } as const;
 export type MockDomain = (typeof MOCK_DOMAIN)[keyof typeof MOCK_DOMAIN];
@@ -19,7 +19,7 @@ const LIST_SEPARATOR = ",";
  *
  *   true                 every domain
  *   false, empty, unset  none; everything goes to the backend
- *   auth,notice          only the listed domains; unknown names are ignored
+ *   auth,notification          only the listed domains; unknown names are ignored
  *
  * The literal `process.env.NEXT_PUBLIC_MOCK_DOMAINS` is required: Next inlines a `NEXT_PUBLIC_`
  * value only where it is written out in full. This is the only place that reads it.

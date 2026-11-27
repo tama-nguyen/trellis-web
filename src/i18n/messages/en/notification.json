@@ -1,0 +1,33 @@
+{
+  "list": {
+    "title": "Notifications",
+    "description": "Sample feature: a cursor-paged list from the notification API.",
+    "searchLabel": "Search notifications",
+    "searchPlaceholder": "Search by title",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "New notifications will appear here when they are published.",
+    "emptySearchTitle": "No notifications match your search",
+    "emptySearchDescription": "Try a shorter or different word.",
+    "errorTitle": "Notifications could not be loaded",
+    "staffLabel": "Staff only",
+    "loadMore": "Load more",
+    "endOfList": "You have reached the end of the list."
+  },
+  "detail": {
+    "title": "Notification",
+    "back": "All notifications",
+    "publishedAt": "Published {date}",
+    "notFoundTitle": "Notification not found",
+    "notFoundDescription": "It may have been removed, or the link is wrong.",
+    "errorTitle": "This notification could not be loaded",
+    "publishCount": "{count, plural, =0 {Not published yet} one {Published # time} other {Published # times}}"
+  },
+  "severity": {
+    "INFO": "Info",
+    "WARNING": "Warning",
+    "CRITICAL": "Critical"
+  },
+  "errors": {
+    "notFound": "Notification not found."
+  }
+}

@@ -16,16 +16,16 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-    "\n  query NoticeDetail($code: ID!) {\n    notice(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n": typeof types.NoticeDetailDocument,
+    "\n  query NotificationDetail($code: ID!) {\n    notification(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n": typeof types.NotificationDetailDocument,
 };
 const documents: Documents = {
-    "\n  query NoticeDetail($code: ID!) {\n    notice(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n": types.NoticeDetailDocument,
+    "\n  query NotificationDetail($code: ID!) {\n    notification(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n": types.NotificationDetailDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query NoticeDetail($code: ID!) {\n    notice(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n"): typeof import('./graphql').NoticeDetailDocument;
+export function graphql(source: "\n  query NotificationDetail($code: ID!) {\n    notification(code: $code) {\n      code\n      title\n      body\n      severity\n      audience\n      status\n      publishedAt\n      stats {\n        publishCount\n        lastPublishedAt\n      }\n    }\n  }\n"): typeof import('./graphql').NotificationDetailDocument;
 
 
 export function graphql(source: string) {

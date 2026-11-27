@@ -41,7 +41,7 @@ export function AuthMenu() {
 
   return (
     <div className="flex min-w-0 items-center gap-1">
-      {can(PERMISSIONS.NOTICE_MANAGE) ? (
+      {can(PERMISSIONS.NOTIFICATION_MANAGE) ? (
         <Button variant="ghost" size="sm" href={ROUTES.admin} label={t("admin")} />
       ) : null}
       <Button

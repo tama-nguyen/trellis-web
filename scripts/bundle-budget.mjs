@@ -43,7 +43,7 @@ export function classify({ actual, expected, slackBytes, slackRatio, hardRatio }
   return LEVELS.OK;
 }
 
-/** `/[locale]/notices/page` -> [`/layout`, `/[locale]/layout`, `/[locale]/notices/layout`]. */
+/** `/[locale]/notifications/page` -> [`/layout`, `/[locale]/layout`, `/[locale]/notifications/layout`]. */
 export function layoutChainOf(pageKey) {
   const segments = pageKey.slice(0, -PAGE_SUFFIX.length).split("/").filter(Boolean);
   const chain = [LAYOUT_SUFFIX];

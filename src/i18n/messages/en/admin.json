@@ -2,7 +2,7 @@
   "navLabel": "Admin sections",
   "nav": {
     "dashboard": "Dashboard",
-    "notices": "Notices"
+    "notifications": "Notifications"
   },
   "dashboard": {
     "title": "Admin",

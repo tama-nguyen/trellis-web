@@ -11,5 +11,5 @@ export const TestTag = {
 export const AreaTag = {
   SHELL: "@area:shell",
   AUTH: "@area:auth",
-  NOTICE: "@area:notice",
+  NOTIFICATION: "@area:notification",
 } as const;

@@ -54,7 +54,7 @@ Postgres, Kafka, Redis, MinIO and Keycloak belong to the backend's stack (decisi
 and answer with the backend's own contract; sample accounts are in `src/mocks/auth.seed.ts`.
 
 ```bash
-NEXT_PUBLIC_MOCK_DOMAINS=true npm run dev    # true | false | comma list, e.g. auth,notice
+NEXT_PUBLIC_MOCK_DOMAINS=true npm run dev    # true | false | comma list, e.g. auth,notification
 ```
 
 **A real backend.** Start it from the `trellis-backend` repo (`scripts/dev/trellis-dev.sh up` there

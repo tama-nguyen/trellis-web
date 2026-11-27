@@ -27,7 +27,7 @@ then:
 - Title: "Build URLs with pathParams/params"
 
 If a React Query key is written inline instead of coming from the entity's key factory
-(`noticeKeys.all / list(params) / detail(id)`), then:
+(`notificationKeys.all / list(params) / detail(id)`), then:
 
 - Flag it: nothing can invalidate a key it cannot name. Invalidate through the factory.
 - Title: "Query key not from the factory"
@@ -252,7 +252,7 @@ If a domain value, code, status, route or storage key appears as an inline liter
 
 If an entity defines a shape by hand that the generated contract types already describe, then:
 
-- Flag it: re-export the generated shape under a domain name (`NoticeSummary`) and take enum values
+- Flag it: re-export the generated shape under a domain name (`NotificationSummary`) and take enum values
   from the generated `as const` objects, so a contract change breaks the build instead of drifting.
 - Title: "Hand-written shape duplicates a contract type"
 
