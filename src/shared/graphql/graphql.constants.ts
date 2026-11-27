@@ -34,7 +34,7 @@ export const GRAPHQL_ERROR_STATUS: Record<GraphqlErrorCode, number> = {
 /** Fields of `errors[].extensions` set by the backend's exception resolver. */
 export type GraphqlErrorExtensions = {
   code?: string;
-  /** The module's error code, e.g. NOTICE_NOT_FOUND; the same value REST puts in `code`. */
+  /** The module's error code, e.g. NOTIFICATION_NOT_FOUND; the same value REST puts in `code`. */
   errorCode?: string;
   correlationId?: string;
   traceId?: string;

@@ -13,9 +13,9 @@ type SeedRecord = { path: string; body: unknown };
 /**
  * Seeds data for one feature, once per worker:
  *
- *   test.use({ featureName: "notice" });
- *   // seeds from e2e/tests/notice/fixtures/data.json -> [{ "path": "/api/...", "body": {...} }]
- *   // state file: e2e/.seeded/notice.json
+ *   test.use({ featureName: "notification" });
+ *   // seeds from e2e/tests/notification/fixtures/data.json -> [{ "path": "/api/...", "body": {...} }]
+ *   // state file: e2e/.seeded/notification.json
  *
  * `featureName` must be a string literal equal to the test folder name. Stub until a real
  * backend exists: with the in-browser mock there is nothing to POST to, and no data.json yet,

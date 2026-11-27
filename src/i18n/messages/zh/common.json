@@ -6,7 +6,7 @@
   "nav": {
     "label": "主导航",
     "home": "首页",
-    "notices": "通知",
+    "notifications": "通知",
     "account": "账户",
     "admin": "管理",
     "signIn": "登录",
@@ -41,7 +41,7 @@
   "welcome": {
     "title": "为您的下一个产品打下坚实基础",
     "description": "Trellis 提供平台骨架：数据层、设计系统、国际化、认证和质量关卡。在此之上添加您的业务即可。",
-    "ctaNotices": "查看示例功能",
+    "ctaNotifications": "查看示例功能",
     "ctaSignIn": "登录"
   }
 }

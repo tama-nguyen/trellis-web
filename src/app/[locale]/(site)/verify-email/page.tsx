@@ -1,3 +1,4 @@
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";
 import { createLocalizedMetadata } from "@/i18n/metadata";
 import { Suspense } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -5,7 +6,6 @@ import { Skeleton } from "@astryxdesign/core/Skeleton";
 import { VerifyEmailForm } from "@/features/auth/forms/VerifyEmailForm";
 import { PageShell } from "@/ui/layout/PageShell";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
 import type { Locale } from "@/i18n/routing";
 
 type PageProps = { params: Promise<{ locale: Locale }> };
@@ -19,7 +19,7 @@ export default async function Page({ params }: PageProps) {
         <Suspense fallback={<Skeleton className="h-48" />}>
           <VerifyEmailForm />
         </Suspense>
-        <Link href={ROUTES.login}>{t("login.title")}</Link>
+        <Link href={AUTH_ROUTES.login}>{t("login.title")}</Link>
       </section>
     </PageShell>
   );

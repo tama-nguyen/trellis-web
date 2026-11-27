@@ -4,7 +4,6 @@ import { Button } from "@astryxdesign/core/Button";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Heading, Text } from "@astryxdesign/core/Text";
 import { Container } from "@/ui/layout/Container";
-import { ROUTES } from "@/shared/constants/routes";
 import { cn } from "@/ui/lib/cn";
 
 const CLOSING_STICKERS = [
@@ -75,7 +74,7 @@ export function HomeClosing() {
                   variant="primary"
                   size="lg"
                   className="bg-fg text-canvas hover:bg-fg-muted"
-                  href={ROUTES.login}
+                  href={AUTH_ROUTES.login}
                   label={t("cta")}
                 />
               </li>
@@ -86,3 +85,4 @@ export function HomeClosing() {
     </section>
   );
 }
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";

@@ -7,7 +7,7 @@ import { useMe } from "@/entities/auth/auth.queries";
 import { useSession } from "@/entities/auth/auth.session";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
-import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
+import { AUTH_ROUTES, REDIRECT_PARAM } from "@/shared/constants/routes/auth.routes";
 import { screenStateOf } from "@/shared/lib/screenState";
 import { ErrorState } from "@/ui/feedback/ErrorState";
 import { PageShell, SCREEN_STATES } from "@/ui/layout/PageShell";
@@ -30,7 +30,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 
   // Navigation is an external system: this is a legitimate effect, not derived state.
   useEffect(() => {
-    if (signedOut) router.replace({ pathname: ROUTES.login, query: { [REDIRECT_PARAM]: returnTo } });
+    if (signedOut) router.replace({ pathname: AUTH_ROUTES.login, query: { [REDIRECT_PARAM]: returnTo } });
   }, [signedOut, router, returnTo]);
 
   const state = !hydrated || signedOut ? SCREEN_STATES.LOADING : screenStateOf(me);

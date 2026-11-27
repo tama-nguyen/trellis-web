@@ -1,29 +1,30 @@
+/* GENERATED from the Trellis API contracts by the backend toolchain. DO NOT EDIT. Replaced by the @trellis/contracts package (decision T22); see scripts/check-contracts.mjs. */
 /* eslint-disable */
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
-export type NoticeAudience =
+import type { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type NotificationAudience =
   | 'ALL'
   | 'STAFF';
 
-export type NoticeSeverity =
+export type NotificationSeverity =
   | 'CRITICAL'
   | 'INFO'
   | 'WARNING';
 
-export type NoticeStatus =
+export type NotificationStatus =
   | 'ARCHIVED'
   | 'DRAFT'
   | 'PUBLISHED';
 
-export type NoticeDetailQueryVariables = Exact<{
+export type NotificationDetailQueryVariables = Exact<{
   code: string | number;
 }>;
 
 
-export type NoticeDetailQuery = { notice: { code: string, title: string, body: string, severity: NoticeSeverity, audience: NoticeAudience, status: NoticeStatus, publishedAt: string | null, stats: { publishCount: number, lastPublishedAt: string | null } } | null };
+export type NotificationDetailQuery = { notification: { code: string, title: string, body: string, severity: NotificationSeverity, audience: NotificationAudience, status: NotificationStatus, publishedAt: string | null, stats: { publishCount: number, lastPublishedAt: string | null } } | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -44,9 +45,9 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
-export const NoticeDetailDocument = new TypedDocumentString(`
-    query NoticeDetail($code: ID!) {
-  notice(code: $code) {
+export const NotificationDetailDocument = new TypedDocumentString(`
+    query NotificationDetail($code: ID!) {
+  notification(code: $code) {
     code
     title
     body
@@ -60,4 +61,4 @@ export const NoticeDetailDocument = new TypedDocumentString(`
     }
   }
 }
-    `) as unknown as TypedDocumentString<NoticeDetailQuery, NoticeDetailQueryVariables>;
+    `) as unknown as TypedDocumentString<NotificationDetailQuery, NotificationDetailQueryVariables>;

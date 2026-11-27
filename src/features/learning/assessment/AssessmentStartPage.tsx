@@ -29,7 +29,8 @@ import {
 } from "@/entities/learning/assessment.fixtures";
 import { type AttemptHistoryRow } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { ASSESSMENT_ROUTES } from "@/shared/constants/routes/assessment.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
@@ -62,7 +63,7 @@ export function AssessmentStartPage() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 md:px-6">
       <Link
-        href={ROUTES.learnCourse("chinese-i-foundations")}
+        href={LEARNING_ROUTES.learnCourse("chinese-i-foundations")}
         className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg"
       >
         <Icon icon={ArrowLeft} size="sm" />
@@ -180,7 +181,7 @@ function EntryPanel({
           variant="secondary"
           size="sm"
           className="mt-1 w-full"
-          href={ROUTES.assessmentResult(SAMPLE_ASSESSMENT.id, "attempt-2")}
+          href={ASSESSMENT_ROUTES.assessmentResult(SAMPLE_ASSESSMENT.id, "attempt-2")}
           label={t("viewResult")}
         />
       </section>
@@ -200,7 +201,7 @@ function EntryPanel({
         variant="primary"
         className="w-full"
         endContent={<Icon icon={ArrowRight} size="sm" />}
-        href={ROUTES.learnAssessment(SAMPLE_ASSESSMENT.id)}
+        href={ASSESSMENT_ROUTES.learnAssessment(SAMPLE_ASSESSMENT.id)}
         label={isResume && resumeNumber !== undefined ? t("resume", { number: resumeNumber }) : t("start")}
       />
     </section>

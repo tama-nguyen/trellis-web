@@ -2,7 +2,7 @@
   "navLabel": "管理分区",
   "nav": {
     "dashboard": "概览",
-    "notices": "通知"
+    "notifications": "通知"
   },
   "dashboard": {
     "title": "管理",

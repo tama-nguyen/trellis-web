@@ -1,19 +1,19 @@
 import { afterEach, expect, it, vi } from "vitest";
 import { courseApi } from "../course.api";
-import { noticeApi } from "@/entities/notice/notice.api";
+import { notificationApi } from "@/entities/notification/notification.api";
 
 afterEach(() => vi.unstubAllGlobals());
 
-it("uses GET for the notice list and preserves its audience, search and cursor", async () => {
+it("uses GET for the notification list and preserves its audience, search and cursor", async () => {
   const page = { items: [], hasNext: false };
   const fetch = vi.fn().mockResolvedValue(Response.json(page));
   vi.stubGlobal("fetch", fetch);
 
-  expect(await noticeApi.list({ first: 2, audience: "STAFF", query: "hello" }, "cursor")).toEqual(page);
+  expect(await notificationApi.list({ first: 2, audience: "STAFF", query: "hello" }, "cursor")).toEqual(page);
   const [url, init] = fetch.mock.calls.at(0) ?? [];
   const request = new URL(url, "http://localhost");
   expect(init.method).toBe("GET");
-  expect(request.pathname).toBe("/api/notices");
+  expect(request.pathname).toBe("/api/notifications");
   expect(Object.fromEntries(request.searchParams)).toEqual({
     first: "2",
     after: "cursor",

@@ -8,7 +8,7 @@ import { COURSE_LANGUAGES, type CourseLanguage } from "@/entities/learning/learn
 import { LEVEL_FRAMEWORKS, type LevelFramework } from "@/entities/learning/learning.constants";
 import { FRAMEWORK_LEVELS } from "@/entities/learning/studio.fixtures";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Selector } from "@astryxdesign/core/Selector";
@@ -38,7 +38,10 @@ export function CourseDraftForm() {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 md:px-6">
-      <Link href={ROUTES.studio} className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg">
+      <Link
+        href={STUDIO_ROUTES.studio}
+        className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg"
+      >
         <Icon icon={ArrowLeft} size="sm" />
         {t("cancel")}
       </Link>
@@ -115,7 +118,7 @@ export function CourseDraftForm() {
         </p>
 
         <div className="flex flex-wrap justify-end gap-2">
-          <Button variant="secondary" href={ROUTES.studio} label={t("cancel")} />
+          <Button variant="secondary" href={STUDIO_ROUTES.studio} label={t("cancel")} />
           <Button variant="primary" type="submit" label={t("create")} />
         </div>
       </form>

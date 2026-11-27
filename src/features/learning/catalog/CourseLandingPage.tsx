@@ -26,7 +26,8 @@ import { ENROLMENT_STATES, type EnrolmentPolicy } from "@/entities/learning/lear
 import type { CourseLandingDetail } from "@/entities/marketing/courseDetail.types";
 import { BESTSELLER_TONE } from "@/features/marketing/shared/marketing.tones";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Avatar } from "@astryxdesign/core/Avatar";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
@@ -107,7 +108,7 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
       size="md"
       className="group w-full sm:w-auto"
       endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
-      href={ROUTES.learnCourse(course.slug)}
+      href={LEARNING_ROUTES.learnCourse(course.slug)}
       label={t("continueCourse")}
     />
   ) : null;
@@ -128,7 +129,10 @@ export function CourseLandingPage({ course }: { course: CourseLandingDetail }) {
                 vAlign="center"
                 className="animate-rise text-sm"
               >
-                <Link href={ROUTES.courses} className="font-semibold text-fg-brand hover:text-brand-hover">
+                <Link
+                  href={MARKETING_ROUTES.courses}
+                  className="font-semibold text-fg-brand hover:text-brand-hover"
+                >
                   {tNav("courses")}
                 </Link>
                 <Icon icon={ChevronRight} size="sm" className="text-fg-subtle" />

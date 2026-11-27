@@ -59,7 +59,7 @@ export function CourseDirectory() {
       </ul>
       {courses.hasNextPage && (
         <button disabled={courses.isFetchingNextPage} onClick={() => void courses.fetchNextPage()}>
-          {t("notice.list.loadMore")}
+          {t("notification.list.loadMore")}
         </button>
       )}
     </PageShell>

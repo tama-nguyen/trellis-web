@@ -29,7 +29,7 @@ import {
   type CourseLanguage,
   ENROLMENT_STATES,
 } from "@/entities/learning/learning.constants";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
@@ -420,7 +420,11 @@ function CourseCard({ course, isRow }: { course: CourseSummary; isRow: boolean }
             variant={isEnrolled ? "secondary" : "primary"}
             size="md"
             className={cn("group", isRow ? "ml-auto w-fit min-w-40" : "w-full")}
-            href={isEnrolled ? ROUTES.learnCourse(course.slug) : ROUTES.catalogCourse(course.slug)}
+            href={
+              isEnrolled
+                ? LEARNING_ROUTES.learnCourse(course.slug)
+                : LEARNING_ROUTES.catalogCourse(course.slug)
+            }
             label={isEnrolled ? t("viewCourse") : t("enrol")}
             endContent={isEnrolled ? undefined : <Icon icon={ArrowRight} size="sm" />}
           />

@@ -1,5 +1,16 @@
 # Authentication route groups
 
+The merged `refactor/split-routes-by-feature` branch renames the sample notice domain and its
+routes to notification (`/notifications`, `/notifications/[notificationCode]`) and changes its
+admin permission to `notification:manage`. The before/after inventory below records the route
+guard refactor before that rename. Route constants now live in feature-specific files under
+`src/shared/constants/routes/`; authentication and the localized metadata helper are retained.
+
+The sibling backend checkout currently exports the older notice schema. Regenerating the
+notification GraphQL document against it fails with `Cannot query field "notification" on type
+"Query"`. The merge retains the generated notification snapshots from the incoming branch.
+Contract generation requires a backend checkout with the matching notification contract.
+
 All paths below have a locale prefix (`vi`, `en` or `zh`). Route groups do not change URLs.
 
 ## Before and after

@@ -1,7 +1,12 @@
 import { GraduationCap } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { SITE_ROUTES } from "@/shared/constants/routes/site.routes";
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";
+import { NOTIFICATION_ROUTES } from "@/shared/constants/routes/notification.routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Container } from "@/ui/layout/Container";
 import { Icon } from "@astryxdesign/core/Icon";
 
@@ -13,7 +18,7 @@ type FooterLinkKey =
   | "questionBank"
   | "analytics"
   | "search"
-  | "notices"
+  | "notifications"
   | "signIn";
 
 type FooterColumn = {
@@ -25,25 +30,25 @@ const COLUMNS: readonly FooterColumn[] = [
   {
     key: "learn",
     links: [
-      { key: "catalog", href: ROUTES.courses },
-      { key: "myCourses", href: ROUTES.myCourses },
-      { key: "progress", href: ROUTES.learnProgress },
+      { key: "catalog", href: MARKETING_ROUTES.courses },
+      { key: "myCourses", href: LEARNING_ROUTES.myCourses },
+      { key: "progress", href: LEARNING_ROUTES.learnProgress },
     ],
   },
   {
     key: "teach",
     links: [
-      { key: "studio", href: ROUTES.studio },
-      { key: "questionBank", href: ROUTES.studioQuestionBank },
-      { key: "analytics", href: ROUTES.studioAnalytics },
+      { key: "studio", href: STUDIO_ROUTES.studio },
+      { key: "questionBank", href: STUDIO_ROUTES.studioQuestionBank },
+      { key: "analytics", href: STUDIO_ROUTES.studioAnalytics },
     ],
   },
   {
     key: "about",
     links: [
-      { key: "search", href: ROUTES.search },
-      { key: "notices", href: ROUTES.notices },
-      { key: "signIn", href: ROUTES.login },
+      { key: "search", href: LEARNING_ROUTES.search },
+      { key: "notifications", href: NOTIFICATION_ROUTES.notifications },
+      { key: "signIn", href: AUTH_ROUTES.login },
     ],
   },
 ];
@@ -61,7 +66,7 @@ export function AppFooter() {
       <Container className="py-12">
         <div className="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div className="min-w-0">
-            <Link href={ROUTES.home} className="flex items-center gap-2">
+            <Link href={SITE_ROUTES.home} className="flex items-center gap-2">
               <span className="grid size-8 place-items-center rounded-control bg-info-subtle text-fg-brand">
                 <Icon icon={GraduationCap} size="md" />
               </span>

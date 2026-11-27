@@ -2,7 +2,7 @@
   "navLabel": "Các mục quản trị",
   "nav": {
     "dashboard": "Tổng quan",
-    "notices": "Thông báo"
+    "notifications": "Thông báo"
   },
   "dashboard": {
     "title": "Quản trị",

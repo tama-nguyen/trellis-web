@@ -2,7 +2,7 @@ import { ArrowRight, Check, ChevronDown } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { PRICING_PLANS } from "@/entities/marketing/marketing.fixtures";
 import type { PricingPlan } from "@/entities/marketing/marketing.types";
-import { ROUTES } from "@/shared/constants/routes";
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
@@ -68,7 +68,7 @@ export function PricingPage() {
                 className="transition-transform duration-normal ease-emphasized group-hover:translate-x-0.5"
               />
             }
-            href={ROUTES.login}
+            href={AUTH_ROUTES.login}
             label={tClosing("cta")}
           />
         }
@@ -109,7 +109,7 @@ function PlanCard({ plan }: { plan: PricingPlan }) {
         size="lg"
         className="mt-6 w-full"
         variant={plan.isFeatured ? "primary" : "secondary"}
-        href={ROUTES.login}
+        href={AUTH_ROUTES.login}
         label={t(`plans.${plan.key}Cta`)}
       />
 

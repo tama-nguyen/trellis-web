@@ -11,7 +11,7 @@ Canonical guide for this repo, for every agent (Claude Code, Cursor, Codex, ...)
 | `trellis-ai`      | Python: RAG, Kafka workers, the backend SDK, the `trellis` CLI                                        |
 
 Trellis holds **no business domain**: only the platform skeleton and one tiny sample feature
-(`notice`) that shows every layer end to end. The token `trellis` / `TRELLIS_` is what a future
+(`notification`) that shows every layer end to end. The token `trellis` / `TRELLIS_` is what a future
 `init` script renames.
 
 Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the Node version for nvm.
@@ -43,7 +43,7 @@ Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the N
 
 ## Commits and confidentiality
 
-- Conventional Commits: `type(scope): description` (`feat(notice): add notice detail page`).
+- Conventional Commits: `type(scope): description` (`feat(notification): add notification detail page`).
   Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `test`, `build`, `ci`, `chore`.
 - Breaking changes: `!` after the type, and say in the body what breaks, written for someone who
   does not read code.
@@ -110,9 +110,9 @@ full path (`@/features/learning/studio/CourseStudioPage`): there are no barrels.
 
 | Group                         | Holds                                                                             | Example                                           |
 | ----------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `pages/`                      | the screens a route renders (a feature with one screen per audience)              | `notice/pages/NoticeListPage`                     |
+| `pages/`                      | the screens a route renders (a feature with one screen per audience)              | `notification/pages/NotificationListPage`         |
 | `sections/`                   | the bands a page is assembled from                                                | `home/sections/FeatureCards`                      |
-| `components/`                 | small pieces used inside the feature                                              | `notice/components/...Badge`                      |
+| `components/`                 | small pieces used inside the feature                                              | `notification/components/...Badge`                |
 | `hooks/`                      | `use*` hooks shared by several screens (a hook one screen uses stays in its file) | `learning/hooks/useDateLabel`, `useDurationLabel` |
 | `shared/`                     | helpers, constants and pieces the feature's other groups (or features) use        | `learning/shared/learning.tones`                  |
 | `forms/`, `guards/`, `cards/` | named for what they are, when `components/` would be vague                        | `auth/guards/RequireAuth`                         |
@@ -138,8 +138,8 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
   a single-flight refresh on a stale-token 401, sends `FormData` untouched, and throws `ApiError`.
   Build URLs with `pathParams` / `params`, never by concatenation.
 - `<d>.api.ts`: thin typed wrappers, no caching, no UI. Pass React Query's `signal` through.
-- `<d>.queries.ts`: a **query-key factory** (`noticeKeys.all / list(params) / detail(id)`) and the hooks.
-  Never inline a key; invalidate through the factory (`noticeKeys.all` clears the domain).
+- `<d>.queries.ts`: a **query-key factory** (`notificationKeys.all / list(params) / detail(id)`) and the hooks.
+  Never inline a key; invalidate through the factory (`notificationKeys.all` clears the domain).
 - Server state is never copied into `useState` or a store. Tokens are the one client-held auth state
   (`entities/auth/auth.session.ts`); the user comes from `useMe()`.
 - Errors: `getApiErrorMessage(error, t, { codeMessages })` for inline/page errors,
@@ -152,7 +152,7 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
   `hasNext`; request with `first` + `after`). Use `useInfiniteQuery` and a "load more" control: there
   is no page number or total. `Page<T>` (0-based `page`) remains for offset endpoints (admin tables).
 - Writes, integrations and simple resource reads use REST. Composed screen read models may use GraphQL
-  (`/api/graphql`, typed documents next to the entity, e.g. `entities/notice/notice.graphql.ts`).
+  (`/api/graphql`, typed documents next to the entity, e.g. `entities/notification/notification.graphql.ts`).
 
 ## API contracts (decision T22)
 
@@ -187,7 +187,7 @@ REST snapshot directory from `.prettierignore` and `eslint.config.mjs`. From the
 `npm run contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
 
 - **Never edit generated files**, in either state. They are excluded from ESLint and Prettier.
-- A `graphql(...)` document in an entity (`entities/notice/notice.graphql.ts`) is an input to the
+- A `graphql(...)` document in an entity (`entities/notification/notification.graphql.ts`) is an input to the
   web generator. Keep UI operation generation in web when switching to the published schema.
 - Generated REST functions call `apiRequest` -> `http.ts`, so the token, refresh, `ApiError` and the
   BFF path apply unchanged; pass React Query's signal as the last argument (`{ signal }`).
@@ -195,8 +195,8 @@ REST snapshot directory from `.prettierignore` and `eslint.config.mjs`. From the
   `shared/graphql/executeGraphql.ts`, which turns `errors[0].extensions` into an `ApiError`
   (`extensions.code` -> HTTP-like status, so NOT_FOUND hits the 404 screen; `extensions.errorCode`
   -> `ApiError.code`, the same code REST returns).
-- Entities re-export the generated shapes under domain names (`NoticeSummary`, `NoticeDetail`) and take
-  enum values from the generated `as const` objects (`NOTICE_AUDIENCES = NoticeSummaryAudience`), so
+- Entities re-export the generated shapes under domain names (`NotificationSummary`, `NotificationDetail`) and take
+  enum values from the generated `as const` objects (`NOTIFICATION_AUDIENCES = NotificationSummaryAudience`), so
   a contract change breaks the build instead of drifting. Mocks build their responses from the same
   types.
 
@@ -236,14 +236,14 @@ to the backend's stack, so there are exactly two ways to run the UI:
 
 ## Mock backend
 
-`NEXT_PUBLIC_MOCK_DOMAINS` = `true` | `false` | comma list (`auth,notice,config`), read only in
+`NEXT_PUBLIC_MOCK_DOMAINS` = `true` | `false` | comma list (`auth,notification,config`), read only in
 `mocks/domains.ts`. Handlers answer with the backend's contract, typed with the generated types:
 `problem(path, status, CODE, detail)`, `pageOf(items, page, size, view)` for offset pages, cursor
-pages built like `notice.handlers.ts`, and `guard(request, path, permission?)` for auth. A resource
+pages built like `notification.handlers.ts`, and `guard(request, path, permission?)` for auth. A resource
 the caller may not see (another user's, or a STAFF notice for a non-staff reader) answers **404, not
 403**. The notice domain also mocks `POST /api/graphql` for its composed detail document. Mocks use the same
 constants as the app, never bare literals. Sample accounts: `mocks/auth.seed.ts` (the member has
-`notice:read`; the admin also `notice:read-staff` and `notice:manage`).
+`notification:read`; the admin also `notification:read-staff` and `notification:manage`).
 
 ## React rules
 
@@ -270,7 +270,7 @@ real backend lands: refresh token in an httpOnly cookie, and move the `(protecte
 - All user-visible copy goes through next-intl. Lint: `i18next/no-literal-string` (jsx-only mode, with
   an allow-list of non-copy attributes in `eslint.config.mjs`).
 - One file per namespace per locale: `src/i18n/messages/<locale>/<namespace>.json`. Namespaces are named
-  by area (`common`, `errors`, `auth`, `notice`), not by page. English is the reference shape and gives
+  by area (`common`, `errors`, `auth`, `notification`), not by page. English is the reference shape and gives
   type-checked keys (`i18n/i18n.types.ts`).
 - Placeholders are ICU: `{name}`, plurals `{count, plural, one {...} other {...}}`. Never build sentences
   by concatenation.
@@ -458,10 +458,12 @@ raise budgets; record intended growth with `npm run budget:check -- --update` in
 handlers in `mocks/<d>.handlers.ts`, a seed in `mocks/<d>.seed.ts`, a domain in `mocks/domains.ts` and
 its group in `mocks/routes.ts`.
 
-**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state with
-`screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add the path
-to `ROUTES`; add a message namespace if needed (all three locales); add analytics events to
-`shared/lib/analytics.ts` if the feature needs them.
+**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state
+with `screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add
+the path to the feature's `shared/constants/routes/<domain>.routes.ts` (one `<DOMAIN>_ROUTES` object
+per file, no combined object or barrel; a new domain gets a new file); add a message namespace if
+needed (all three locales); add analytics events to `shared/lib/analytics.ts` if the feature needs
+them.
 
 **A locale**: add it to `LOCALES` and `INTL_LOCALES` in `i18n/routing.ts`, create
 `messages/<locale>/` with every namespace, add its name to `common.locale` in every locale, run

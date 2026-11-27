@@ -1,7 +1,7 @@
 import { ArrowRight } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Section } from "@/ui/layout/Section";
 import { HomeHero } from "../sections/HomeHero";
@@ -35,7 +35,7 @@ function Featured() {
       description={t("subtitle")}
       action={
         <Link
-          href={ROUTES.courses}
+          href={MARKETING_ROUTES.courses}
           className="group flex items-center gap-1.5 text-sm font-semibold text-fg-brand hover:text-brand-hover"
         >
           {t("viewAll")}

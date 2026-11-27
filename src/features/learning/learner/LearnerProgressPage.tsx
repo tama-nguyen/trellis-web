@@ -1,12 +1,13 @@
 "use client";
 
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+
 import { BookOpen, Clock, Flame } from "@/ui/icons/lucide";
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { CATALOG_COURSES } from "@/entities/learning/course.fixtures";
 import { COURSE_PROGRESS, PROGRESS_SUMMARY } from "@/entities/learning/progress.fixtures";
 import type { CourseProgressRow } from "@/entities/learning/progress.types";
-import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Card } from "@astryxdesign/core/Card";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
@@ -135,7 +136,7 @@ function CourseProgressItem({ course }: { course: CourseProgressRow }) {
 
   return (
     <ListItem
-      href={ROUTES.learnCourse(course.slug)}
+      href={LEARNING_ROUTES.learnCourse(course.slug)}
       align="start"
       startContent={
         courseArt ? (

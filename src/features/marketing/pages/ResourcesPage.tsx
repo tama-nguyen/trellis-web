@@ -13,7 +13,8 @@ import { useTranslations } from "next-intl";
 import { RESOURCE_ITEMS } from "@/entities/marketing/marketing.fixtures";
 import type { ResourceItem, ResourceKind } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
@@ -37,12 +38,12 @@ const SAMPLE_COURSE_SLUG = "english-everyday-communication";
  * the mock has no CMS, so a guide points at the part of the product it describes.
  */
 const KIND_TARGETS: Record<ResourceItem["key"], string> = {
-  gettingStarted: ROUTES.studioNewCourse,
-  courseDesign: ROUTES.studio,
-  assessmentDesign: ROUTES.studioQuestionBank,
-  aiTutor: ROUTES.learn,
-  analytics: ROUTES.studioAnalytics,
-  accessibility: ROUTES.studioResources,
+  gettingStarted: STUDIO_ROUTES.studioNewCourse,
+  courseDesign: STUDIO_ROUTES.studio,
+  assessmentDesign: STUDIO_ROUTES.studioQuestionBank,
+  aiTutor: LEARNING_ROUTES.learn,
+  analytics: STUDIO_ROUTES.studioAnalytics,
+  accessibility: STUDIO_ROUTES.studioResources,
 };
 
 const ARROW_CLASSES = "transition-transform duration-normal ease-emphasized group-hover:translate-x-1";
@@ -119,14 +120,14 @@ export function ResourcesPage() {
               variant="secondary"
               className="border-transparent"
               icon={<Icon icon={Search} size="sm" />}
-              href={ROUTES.search}
+              href={LEARNING_ROUTES.search}
               label={t("helpSearch")}
             />
             <Button
               size="lg"
               variant="ghost"
               className="text-on-brand hover:bg-surface/15"
-              href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
+              href={LEARNING_ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
               label={t("helpSample")}
             />
           </>

@@ -5,7 +5,7 @@ import { json, type MockRoute } from "./router";
 /** Flip these to try both branches of a flag locally. */
 const MOCK_APP_CONFIG: AppConfig = {
   featureFlags: {
-    noticeSearch: true,
+    notificationSearch: true,
   },
 };
 

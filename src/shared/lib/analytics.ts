@@ -1,7 +1,7 @@
 /**
  * Typed product analytics. Every event is a member of the `AnalyticsEvent` union, so a
  * misspelt event or a missing property is a compile error, and changing provider never touches
- * a call site: `track({ type: EventType.NoticeOpened, noticeCode })`.
+ * a call site: `track({ type: EventType.NotificationOpened, notificationCode })`.
  *
  * Never put personal data (emails, names, free text) in an event.
  */
@@ -11,8 +11,8 @@ export const EventType = {
   LoginSucceeded: "LoginSucceeded",
   LoggedOut: "LoggedOut",
   LocaleChanged: "LocaleChanged",
-  NoticeOpened: "NoticeOpened",
-  NoticeSearched: "NoticeSearched",
+  NotificationOpened: "NotificationOpened",
+  NotificationSearched: "NotificationSearched",
 } as const;
 export type EventType = (typeof EventType)[keyof typeof EventType];
 
@@ -20,16 +20,16 @@ type PageViewedEvent = { type: typeof EventType.PageViewed; path: string };
 type LoginSucceededEvent = { type: typeof EventType.LoginSucceeded };
 type LoggedOutEvent = { type: typeof EventType.LoggedOut };
 type LocaleChangedEvent = { type: typeof EventType.LocaleChanged; from: string; to: string };
-type NoticeOpenedEvent = { type: typeof EventType.NoticeOpened; noticeCode: string };
-type NoticeSearchedEvent = { type: typeof EventType.NoticeSearched; queryLength: number };
+type NotificationOpenedEvent = { type: typeof EventType.NotificationOpened; notificationCode: string };
+type NotificationSearchedEvent = { type: typeof EventType.NotificationSearched; queryLength: number };
 
 export type AnalyticsEvent =
   | PageViewedEvent
   | LoginSucceededEvent
   | LoggedOutEvent
   | LocaleChangedEvent
-  | NoticeOpenedEvent
-  | NoticeSearchedEvent;
+  | NotificationOpenedEvent
+  | NotificationSearchedEvent;
 
 /** Context attached to every event by `track`, so call sites do not repeat it. */
 export type EventContext = {

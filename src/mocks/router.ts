@@ -21,7 +21,7 @@ export type MockHandler = (context: MockContext) => Promise<Response> | Response
 
 export type MockRoute = {
   method: HttpMethod;
-  /** Path with `:name` placeholders, e.g. "/api/notices/:noticeCode". */
+  /** Path with `:name` placeholders, e.g. "/api/notifications/:notificationCode". */
   pattern: string;
   handler: MockHandler;
 };
