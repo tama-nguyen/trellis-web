@@ -25,7 +25,7 @@ export type FieldViolation = {
 
 /**
  * Body of any non-2xx response: RFC 7807 problem details plus three extensions.
- * `code` is the backend's stable wire code (an `ErrorCode`, SCREAMING_SNAKE, e.g. `NOTICE_NOT_FOUND`);
+ * `code` is the backend's stable wire code (an `ErrorCode`, SCREAMING_SNAKE, e.g. `NOTIFICATION_NOT_FOUND`);
  * `correlationId` is the request id, shown to the user only on a 5xx for support.
  */
 export type ApiErrorBody = {

@@ -11,14 +11,14 @@ import { Icon } from "@astryxdesign/core/Icon";
 
 type AdminNavItem = {
   href: string;
-  labelKey: "dashboard" | "notices";
+  labelKey: "dashboard" | "notifications";
   icon: LucideIcon;
 };
 
 /** Admin sections. Add an entry here when an admin page is added. */
 const ADMIN_NAV: readonly AdminNavItem[] = [
   { href: ROUTES.admin, labelKey: "dashboard", icon: LayoutDashboard },
-  { href: ROUTES.notices, labelKey: "notices", icon: Megaphone },
+  { href: ROUTES.notifications, labelKey: "notifications", icon: Megaphone },
 ];
 
 /** Sidebar on wide screens, a horizontal scroller above the content on phones. */

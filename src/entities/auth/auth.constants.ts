@@ -42,11 +42,11 @@ export const AUTH_ERROR_MESSAGES: ErrorMessageMap = {
 /**
  * Flat permission codes, exactly as the backend's `@PermissionCatalog` classes declare them
  * (`resource:action`); the backend resolves them on every request. The admin area is about
- * managing notices, so it is gated by `notice:manage` (no web-only permissions).
+ * managing notifications, so it is gated by `notification:manage` (no web-only permissions).
  */
 export const PERMISSIONS = {
-  NOTICE_READ: "notice:read",
-  NOTICE_READ_STAFF: "notice:read-staff",
-  NOTICE_MANAGE: "notice:manage",
+  NOTIFICATION_READ: "notification:read",
+  NOTIFICATION_READ_STAFF: "notification:read-staff",
+  NOTIFICATION_MANAGE: "notification:manage",
 } as const;
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

@@ -7,7 +7,7 @@ import type marketing from "./messages/en/marketing.json";
 import type common from "./messages/en/common.json";
 import type home from "./messages/en/home.json";
 import type errors from "./messages/en/errors.json";
-import type notice from "./messages/en/notice.json";
+import type notification from "./messages/en/notification.json";
 import type { Locale } from "./routing";
 
 /** English is the reference shape; the parity script holds vi and zh to it. */
@@ -17,7 +17,7 @@ export type AppMessages = {
   auth: typeof auth;
   account: typeof account;
   admin: typeof admin;
-  notice: typeof notice;
+  notification: typeof notification;
   learning: typeof learning;
   home: typeof home;
   marketing: typeof marketing;

@@ -9,13 +9,13 @@ import { get } from "@/shared/api/http";
  * as the flag-on branch.
  */
 export type FeatureFlags = {
-  /** Sample: search box on the notice list. */
-  noticeSearch: boolean;
+  /** Sample: search box on the notification list. */
+  notificationSearch: boolean;
 };
 export type FeatureFlagKey = keyof FeatureFlags;
 
 export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
-  noticeSearch: false,
+  notificationSearch: false,
 };
 
 export const APP_CONFIG_PATH = "/api/app-config";

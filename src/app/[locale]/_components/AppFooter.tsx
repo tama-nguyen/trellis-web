@@ -13,7 +13,7 @@ type FooterLinkKey =
   | "questionBank"
   | "analytics"
   | "search"
-  | "notices"
+  | "notifications"
   | "signIn";
 
 type FooterColumn = {
@@ -42,7 +42,7 @@ const COLUMNS: readonly FooterColumn[] = [
     key: "about",
     links: [
       { key: "search", href: ROUTES.search },
-      { key: "notices", href: ROUTES.notices },
+      { key: "notifications", href: ROUTES.notifications },
       { key: "signIn", href: ROUTES.login },
     ],
   },

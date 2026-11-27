@@ -18,13 +18,17 @@ export const SEED_USERS: readonly SeedUser[] = [
     email: "member@example.test",
     password: "member-pass",
     displayName: "Minh Anh",
-    permissions: [PERMISSIONS.NOTICE_READ],
+    permissions: [PERMISSIONS.NOTIFICATION_READ],
   },
   {
     id: "u-admin",
     email: "admin@example.test",
     password: "admin-pass",
     displayName: "Lan Chi",
-    permissions: [PERMISSIONS.NOTICE_READ, PERMISSIONS.NOTICE_READ_STAFF, PERMISSIONS.NOTICE_MANAGE],
+    permissions: [
+      PERMISSIONS.NOTIFICATION_READ,
+      PERMISSIONS.NOTIFICATION_READ_STAFF,
+      PERMISSIONS.NOTIFICATION_MANAGE,
+    ],
   },
 ];

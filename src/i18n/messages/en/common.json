@@ -6,7 +6,7 @@
   "nav": {
     "label": "Main",
     "home": "Home",
-    "notices": "Notices",
+    "notifications": "Notifications",
     "account": "Account",
     "admin": "Admin",
     "signIn": "Sign in",
@@ -41,7 +41,7 @@
   "welcome": {
     "title": "A solid starting point for your next product",
     "description": "Trellis ships the platform skeleton: data layer, design system, i18n, auth and quality gates. Add your domain on top.",
-    "ctaNotices": "See the sample feature",
+    "ctaNotifications": "See the sample feature",
     "ctaSignIn": "Sign in"
   }
 }
