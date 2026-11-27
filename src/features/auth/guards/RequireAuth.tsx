@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
 import { useMe } from "@/entities/auth/auth.queries";
 import { useSession } from "@/entities/auth/auth.session";
@@ -22,12 +23,15 @@ export function RequireAuth({ children }: { children: ReactNode }) {
   const me = useMe();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const query = searchParams.toString();
+  const returnTo = query ? `${pathname}?${query}` : pathname;
   const signedOut = hydrated && tokens === null;
 
   // Navigation is an external system: this is a legitimate effect, not derived state.
   useEffect(() => {
-    if (signedOut) router.replace({ pathname: ROUTES.login, query: { [REDIRECT_PARAM]: pathname } });
-  }, [signedOut, router, pathname]);
+    if (signedOut) router.replace({ pathname: ROUTES.login, query: { [REDIRECT_PARAM]: returnTo } });
+  }, [signedOut, router, returnTo]);
 
   const state = !hydrated || signedOut ? SCREEN_STATES.LOADING : screenStateOf(me);
   if (state === SCREEN_STATES.READY) return children;

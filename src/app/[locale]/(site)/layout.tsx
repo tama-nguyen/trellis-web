@@ -1,18 +1,10 @@
 import type { ReactNode } from "react";
-import { AppFooter } from "../_components/AppFooter";
-import { AppHeader } from "../_components/AppHeader";
+import { SiteShell } from "../_components/SiteShell";
 
 /**
- * The marketing and admin side of the app, which carries the global header. The LMS routes sit
- * outside this group because they bring their own chrome: a parent layout cannot be removed by a
- * child, so the header has to live down here rather than in the locale layout.
+ * Public pages carry the global header. Protected account/admin pages share the visual shell
+ * through their own site layout, below the authentication boundary.
  */
 export default function SiteLayout({ children }: { children: ReactNode }) {
-  return (
-    <>
-      <AppHeader />
-      <div className="flex flex-1 flex-col bg-canvas">{children}</div>
-      <AppFooter />
-    </>
-  );
+  return <SiteShell>{children}</SiteShell>;
 }

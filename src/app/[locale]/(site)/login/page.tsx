@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { createLocalizedMetadata } from "@/i18n/metadata";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { LoginForm } from "@/features/auth/forms/LoginForm";
@@ -8,11 +8,7 @@ import { Skeleton } from "@astryxdesign/core/Skeleton";
 
 type LoginPageProps = { params: Promise<{ locale: Locale }> };
 
-export async function generateMetadata({ params }: LoginPageProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "auth.login" });
-  return { title: t("title"), robots: { index: false } };
-}
+export const generateMetadata = createLocalizedMetadata("auth.login.title", { robots: { index: false } });
 
 export default async function LoginPage({ params }: LoginPageProps) {
   const { locale } = await params;
