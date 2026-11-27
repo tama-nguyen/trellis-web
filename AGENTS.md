@@ -156,6 +156,9 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
 
 ## API contracts (decision T22)
 
+Renaming a domain, or looking for the tool behind a generated file: read
+`../trellis-backend/docs/guide/rename-module.md` before searching the code.
+
 **Nothing is generated in this repo.** `contracts/` belongs to `trellis-backend`, because the
 backend produces the OpenAPI document and the GraphQL schema. Its pipeline runs the generators and
 publishes one npm package to the GitLab Package Registry of that project; this repo installs it at
