@@ -10,7 +10,7 @@ import {
 import { useNotifications } from "@/entities/notification/notification.queries";
 import { Link } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
-import { ROUTES } from "@/shared/constants/routes";
+import { NOTIFICATION_ROUTES } from "@/shared/constants/routes/notification.routes";
 import { useDebouncedCallback } from "@/shared/hooks/useDebouncedCallback";
 import { useFeatureFlag } from "@/shared/hooks/useFeatureFlag";
 import { EventType, track } from "@/shared/lib/analytics";
@@ -107,7 +107,7 @@ export function NotificationListPage() {
             {items.map((notification) => (
               <li key={notification.code}>
                 <Link
-                  href={ROUTES.notificationDetail(notification.code)}
+                  href={NOTIFICATION_ROUTES.notificationDetail(notification.code)}
                   onClick={() =>
                     track({ type: EventType.NotificationOpened, notificationCode: notification.code })
                   }

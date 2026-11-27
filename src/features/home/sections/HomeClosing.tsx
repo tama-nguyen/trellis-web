@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@astryxdesign/core/Button";
 import { Heading, Text } from "@astryxdesign/core/Text";
 import { Container } from "@/ui/layout/Container";
-import { ROUTES } from "@/shared/constants/routes";
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";
 
 /** A quieter final prompt; the decorative collage belongs to the opening hero, not both CTAs. */
 export function HomeClosing() {
@@ -25,7 +25,7 @@ export function HomeClosing() {
                   variant="primary"
                   size="lg"
                   className="bg-fg text-canvas hover:bg-fg-muted"
-                  href={ROUTES.login}
+                  href={AUTH_ROUTES.login}
                   label={t("cta")}
                 />
               </li>

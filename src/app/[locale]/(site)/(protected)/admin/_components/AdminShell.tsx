@@ -5,7 +5,8 @@ import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Link, usePathname } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { SITE_ROUTES } from "@/shared/constants/routes/site.routes";
+import { NOTIFICATION_ROUTES } from "@/shared/constants/routes/notification.routes";
 import { cn } from "@/ui/lib/cn";
 import { Icon } from "@astryxdesign/core/Icon";
 
@@ -17,8 +18,8 @@ type AdminNavItem = {
 
 /** Admin sections. Add an entry here when an admin page is added. */
 const ADMIN_NAV: readonly AdminNavItem[] = [
-  { href: ROUTES.admin, labelKey: "dashboard", icon: LayoutDashboard },
-  { href: ROUTES.notifications, labelKey: "notifications", icon: Megaphone },
+  { href: SITE_ROUTES.admin, labelKey: "dashboard", icon: LayoutDashboard },
+  { href: NOTIFICATION_ROUTES.notifications, labelKey: "notifications", icon: Megaphone },
 ];
 
 /** Sidebar on wide screens, a horizontal scroller above the content on phones. */

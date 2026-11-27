@@ -8,7 +8,7 @@ import { CourseThumbnail } from "@/features/learning/shared/CourseThumbnail";
 import { LANGUAGE_TONES } from "@/features/learning/shared/learning.tones";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Avatar } from "@astryxdesign/core/Avatar";
 import { Badge } from "@astryxdesign/core/Badge";
 import { HStack } from "@astryxdesign/core/HStack";
@@ -40,7 +40,7 @@ export function DetailedCourseCard({ course }: { course: CatalogCourse }) {
 
   return (
     <Link
-      href={ROUTES.catalogCourse(course.slug)}
+      href={LEARNING_ROUTES.catalogCourse(course.slug)}
       className={cn(
         cardVariants({ size: "none", isInteractive: true }),
         "group flex h-full flex-col overflow-hidden",

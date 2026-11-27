@@ -8,7 +8,7 @@ import { AUTH_ERROR_MESSAGES } from "@/entities/auth/auth.constants";
 import { useLogin } from "@/entities/auth/auth.queries";
 import { useRouter } from "@/i18n/navigation";
 import { getApiErrorMessage } from "@/shared/api/errors";
-import { REDIRECT_PARAM, ROUTES } from "@/shared/constants/routes";
+import { AUTH_ROUTES, REDIRECT_PARAM } from "@/shared/constants/routes/auth.routes";
 import { EventType, track } from "@/shared/lib/analytics";
 import { safeRedirectPath } from "@/shared/lib/url";
 import { Button } from "@astryxdesign/core/Button";
@@ -47,7 +47,7 @@ export function LoginForm() {
       {
         onSuccess: () => {
           track({ type: EventType.LoginSucceeded });
-          router.replace(safeRedirectPath(searchParams.get(REDIRECT_PARAM)) ?? ROUTES.account);
+          router.replace(safeRedirectPath(searchParams.get(REDIRECT_PARAM)) ?? AUTH_ROUTES.account);
         },
       },
     );

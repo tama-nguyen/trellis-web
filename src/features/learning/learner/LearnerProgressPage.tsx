@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { COURSE_PROGRESS, PROGRESS_SUMMARY } from "@/entities/learning/progress.fixtures";
 import type { CourseProgressRow } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { Icon } from "@astryxdesign/core/Icon";
@@ -88,7 +88,7 @@ function CourseProgressCard({ course }: { course: CourseProgressRow }) {
     <article className="flex flex-wrap items-center gap-4 rounded-card border border-border bg-surface p-4">
       <div className="min-w-0 flex-1 basis-64">
         <Link
-          href={ROUTES.learnCourse(course.slug)}
+          href={LEARNING_ROUTES.learnCourse(course.slug)}
           className="text-sm font-semibold text-fg hover:text-fg-brand"
         >
           {course.title}

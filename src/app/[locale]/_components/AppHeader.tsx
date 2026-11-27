@@ -4,7 +4,10 @@ import { GraduationCap, Menu, Search, X } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { SITE_ROUTES } from "@/shared/constants/routes/site.routes";
+import { AUTH_ROUTES } from "@/shared/constants/routes/auth.routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { Container } from "@/ui/layout/Container";
 import { Icon } from "@astryxdesign/core/Icon";
@@ -24,10 +27,10 @@ const NAV_LINK_CLASSES =
   "relative flex items-center px-3 text-sm font-medium whitespace-nowrap text-fg-muted transition-colors duration-fast ease-standard after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:origin-center after:scale-x-0 after:bg-brand after:transition-transform after:duration-normal after:ease-emphasized hover:text-fg hover:after:scale-x-100";
 
 const NAV: readonly NavEntry[] = [
-  { key: "courses", href: ROUTES.courses },
-  { key: "educators", href: ROUTES.educators },
-  { key: "pricing", href: ROUTES.pricing },
-  { key: "resources", href: ROUTES.resources },
+  { key: "courses", href: MARKETING_ROUTES.courses },
+  { key: "educators", href: MARKETING_ROUTES.educators },
+  { key: "pricing", href: MARKETING_ROUTES.pricing },
+  { key: "resources", href: MARKETING_ROUTES.resources },
 ];
 
 export function AppHeader() {
@@ -48,7 +51,7 @@ export function AppHeader() {
           <Icon icon={isMenuOpen ? X : Menu} size="sm" />
         </button>
 
-        <Link href={ROUTES.home} className="flex shrink-0 items-center gap-2">
+        <Link href={SITE_ROUTES.home} className="flex shrink-0 items-center gap-2">
           <span className="grid size-8 place-items-center rounded-control bg-info-subtle text-fg-brand">
             <Icon icon={GraduationCap} size="md" />
           </span>
@@ -81,7 +84,7 @@ export function AppHeader() {
 
         <div className="ml-auto flex shrink-0 items-center gap-2 xl:ml-3">
           <Link
-            href={ROUTES.search}
+            href={LEARNING_ROUTES.search}
             aria-label={t("searchLabel")}
             className="grid size-9 place-items-center rounded-control border border-border text-fg-muted hover:bg-surface-hover hover:text-fg xl:hidden"
           >
@@ -96,10 +99,10 @@ export function AppHeader() {
           <Button
             variant="secondary"
             className="hidden sm:inline-flex"
-            href={ROUTES.login}
+            href={AUTH_ROUTES.login}
             label={t("signIn")}
           />
-          <Button variant="primary" href={ROUTES.login} label={t("getStarted")} />
+          <Button variant="primary" href={AUTH_ROUTES.login} label={t("getStarted")} />
         </div>
       </Container>
 

@@ -5,7 +5,7 @@ import { ChevronRight, FileText } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { LEARNER_NOTES } from "@/entities/learning/library.fixtures";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Prose } from "@/ui/primitives/Prose";
@@ -49,7 +49,7 @@ export function NotesPage() {
                   </ul>
                 </Prose>
                 <Link
-                  href={ROUTES.learnCourse("english-everyday-communication")}
+                  href={LEARNING_ROUTES.learnCourse("english-everyday-communication")}
                   className="mt-3 inline-flex items-center gap-1 text-sm text-fg-brand hover:text-brand-hover"
                 >
                   {t("openLesson")}

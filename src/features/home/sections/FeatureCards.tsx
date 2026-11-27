@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import { MARKETING_FEATURES } from "@/entities/marketing/marketing.fixtures";
 import type { MarketingFeature } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { cn } from "@/ui/lib/cn";
 import { Icon } from "@astryxdesign/core/Icon";
 import { Section } from "@/ui/layout/Section";
@@ -18,10 +19,10 @@ type FeatureLook = {
 
 /** Each feature: its photograph, its colour, and the screen it leads to. */
 const FEATURE_LOOKS: Record<MarketingFeature["key"], FeatureLook> = {
-  structured: { image: "/images/courses/blossom.jpg", variant: "amber", href: ROUTES.courses },
-  aiPractice: { image: "/images/hero-learner.jpg", variant: "mint", href: ROUTES.learn },
-  progress: { image: "/images/courses/lantern.jpg", variant: "rose", href: ROUTES.learnProgress },
-  teach: { image: "/images/courses/landmark.jpg", variant: "sky", href: ROUTES.educators },
+  structured: { image: "/images/courses/blossom.jpg", variant: "amber", href: MARKETING_ROUTES.courses },
+  aiPractice: { image: "/images/hero-learner.jpg", variant: "mint", href: LEARNING_ROUTES.learn },
+  progress: { image: "/images/courses/lantern.jpg", variant: "rose", href: LEARNING_ROUTES.learnProgress },
+  teach: { image: "/images/courses/landmark.jpg", variant: "sky", href: MARKETING_ROUTES.educators },
 };
 
 /** A four-up row at desktop, two-up at tablet, full width on a phone. */

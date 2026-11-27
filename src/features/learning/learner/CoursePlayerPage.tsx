@@ -44,7 +44,7 @@ import {
   type LessonTab,
 } from "@/entities/learning/learning.constants";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
@@ -115,11 +115,11 @@ export function CoursePlayerPage() {
   return (
     <div className="flex flex-col gap-4">
       <nav aria-label={t("breadcrumbLabel")} className="flex items-center gap-1.5 text-sm text-fg-muted">
-        <Link href={ROUTES.learn} aria-label={t("breadcrumbHome")} className="hover:text-fg">
+        <Link href={LEARNING_ROUTES.learn} aria-label={t("breadcrumbHome")} className="hover:text-fg">
           <Icon icon={Home} size="sm" />
         </Link>
         <Icon icon={ChevronRight} size="sm" className="text-fg-subtle" />
-        <Link href={ROUTES.catalog} className="hover:text-fg">
+        <Link href={LEARNING_ROUTES.catalog} className="hover:text-fg">
           {t("breadcrumbMyCourses")}
         </Link>
         <Icon icon={ChevronRight} size="sm" className="text-fg-subtle" />

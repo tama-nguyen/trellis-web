@@ -461,10 +461,12 @@ raise budgets; record intended growth with `npm run budget:check -- --update` in
 handlers in `mocks/<d>.handlers.ts`, a seed in `mocks/<d>.seed.ts`, a domain in `mocks/domains.ts` and
 its group in `mocks/routes.ts`.
 
-**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state with
-`screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add the path
-to `ROUTES`; add a message namespace if needed (all three locales); add analytics events to
-`shared/lib/analytics.ts` if the feature needs them.
+**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state
+with `screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add
+the path to the feature's `shared/constants/routes/<domain>.routes.ts` (one `<DOMAIN>_ROUTES` object
+per file, no combined object or barrel; a new domain gets a new file); add a message namespace if
+needed (all three locales); add analytics events to `shared/lib/analytics.ts` if the feature needs
+them.
 
 **A locale**: add it to `LOCALES` and `INTL_LOCALES` in `i18n/routing.ts`, create
 `messages/<locale>/` with every namespace, add its name to `common.locale` in every locale, run

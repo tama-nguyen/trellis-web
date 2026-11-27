@@ -5,7 +5,7 @@ import { ChevronRight, Layers, Plus, Users } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { STUDIO_COURSES } from "@/entities/learning/studio.fixtures";
 import type { StudioCourseRow } from "@/entities/learning/studio.types";
-import { ROUTES } from "@/shared/constants/routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
@@ -29,7 +29,7 @@ export function StudioCoursesPage() {
         <Button
           variant="primary"
           icon={<Icon icon={Plus} size="sm" />}
-          href={ROUTES.studioNewCourse}
+          href={STUDIO_ROUTES.studioNewCourse}
           label={t("newCourse")}
         />
       </header>
@@ -39,7 +39,7 @@ export function StudioCoursesPage() {
           icon={<Icon icon={Layers} size="lg" />}
           title={t("emptyTitle")}
           description={t("emptyDescription")}
-          actions={<Button variant="primary" href={ROUTES.studioNewCourse} label={t("newCourse")} />}
+          actions={<Button variant="primary" href={STUDIO_ROUTES.studioNewCourse} label={t("newCourse")} />}
         />
       ) : (
         <ul className="flex flex-col gap-3">
@@ -82,7 +82,7 @@ function CourseRow({ course }: { course: StudioCourseRow }) {
         variant="secondary"
         size="sm"
         endContent={<Icon icon={ChevronRight} size="sm" />}
-        href={ROUTES.studioCourse(course.slug)}
+        href={STUDIO_ROUTES.studioCourse(course.slug)}
         label={t("open")}
       />
     </article>

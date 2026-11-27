@@ -3,7 +3,8 @@ import { ArrowRight, BarChart3, ClipboardCheck, PenLine, Rocket, Timer, Users } 
 import { useTranslations } from "next-intl";
 import { EDUCATOR_PROOF, EDUCATOR_STEPS } from "@/entities/marketing/marketing.fixtures";
 import type { EducatorStep } from "@/entities/marketing/marketing.types";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { CallToAction } from "@/ui/layout/CallToAction";
 import { Card } from "@/ui/card/Card";
@@ -45,13 +46,13 @@ export function EducatorsPage() {
               size="lg"
               className="group"
               endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
-              href={ROUTES.studio}
+              href={STUDIO_ROUTES.studio}
               label={t("ctaPrimary")}
             />
             <Button
               size="lg"
               variant="secondary"
-              href={ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
+              href={LEARNING_ROUTES.catalogCourse(SAMPLE_COURSE_SLUG)}
               label={t("ctaSecondary")}
             />
           </>
@@ -76,7 +77,7 @@ export function EducatorsPage() {
             variant="secondary"
             className="group border-transparent"
             endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
-            href={ROUTES.studioNewCourse}
+            href={STUDIO_ROUTES.studioNewCourse}
             label={t("closingCta")}
           />
         }
