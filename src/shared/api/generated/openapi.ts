@@ -209,31 +209,31 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/notices": {
+    "/api/notifications": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["listNotices"];
+        get: operations["listNotifications"];
         put?: never;
-        post: operations["createNotice"];
+        post: operations["createNotification"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/notices/{code}": {
+    "/api/notifications/{code}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["getNotice"];
-        put: operations["updateNotice"];
+        get: operations["getNotification"];
+        put: operations["updateNotification"];
         post?: never;
         delete?: never;
         options?: never;
@@ -241,7 +241,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/notices/{code}/archive": {
+    "/api/notifications/{code}/archive": {
         parameters: {
             query?: never;
             header?: never;
@@ -250,14 +250,14 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["archiveNotice"];
+        post: operations["archiveNotification"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/notices/{code}/publish": {
+    "/api/notifications/{code}/publish": {
         parameters: {
             query?: never;
             header?: never;
@@ -266,7 +266,7 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        post: operations["publishNotice"];
+        post: operations["publishNotification"];
         delete?: never;
         options?: never;
         head?: never;
@@ -459,7 +459,7 @@ export interface components {
         LogoutRequest: {
             refreshToken: string;
         };
-        NoticeContentRequest: {
+        NotificationContentRequest: {
             /** @enum {string} */
             audience: "ALL" | "STAFF";
             body: string;
@@ -467,12 +467,12 @@ export interface components {
             severity: "INFO" | "WARNING" | "CRITICAL";
             title: string;
         };
-        NoticePage: {
+        NotificationPage: {
             hasNext: boolean;
-            items: components["schemas"]["NoticeSummary"][];
+            items: components["schemas"]["NotificationSummary"][];
             nextCursor?: string;
         };
-        NoticeSummary: {
+        NotificationSummary: {
             /** @enum {string} */
             audience: "ALL" | "STAFF";
             code: string;
@@ -486,7 +486,7 @@ export interface components {
             status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
             title: string;
         };
-        NoticeView: {
+        NotificationView: {
             /** Format: date-time */
             archivedAt?: string;
             /** @enum {string} */
@@ -1065,7 +1065,7 @@ export interface operations {
             };
         };
     };
-    listNotices: {
+    listNotifications: {
         parameters: {
             query?: {
                 after?: string;
@@ -1085,7 +1085,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticePage"];
+                    "*/*": components["schemas"]["NotificationPage"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1099,7 +1099,7 @@ export interface operations {
             };
         };
     };
-    createNotice: {
+    createNotification: {
         parameters: {
             query?: never;
             header?: never;
@@ -1108,7 +1108,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["NoticeContentRequest"];
+                "application/json": components["schemas"]["NotificationContentRequest"];
             };
         };
         responses: {
@@ -1118,7 +1118,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticeView"];
+                    "*/*": components["schemas"]["NotificationView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1132,7 +1132,7 @@ export interface operations {
             };
         };
     };
-    getNotice: {
+    getNotification: {
         parameters: {
             query?: never;
             header?: never;
@@ -1149,7 +1149,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticeView"];
+                    "*/*": components["schemas"]["NotificationView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1163,7 +1163,7 @@ export interface operations {
             };
         };
     };
-    updateNotice: {
+    updateNotification: {
         parameters: {
             query?: never;
             header: {
@@ -1176,7 +1176,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["NoticeContentRequest"];
+                "application/json": components["schemas"]["NotificationContentRequest"];
             };
         };
         responses: {
@@ -1186,7 +1186,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticeView"];
+                    "*/*": components["schemas"]["NotificationView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1200,7 +1200,7 @@ export interface operations {
             };
         };
     };
-    archiveNotice: {
+    archiveNotification: {
         parameters: {
             query?: never;
             header?: never;
@@ -1217,7 +1217,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticeView"];
+                    "*/*": components["schemas"]["NotificationView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
@@ -1231,7 +1231,7 @@ export interface operations {
             };
         };
     };
-    publishNotice: {
+    publishNotification: {
         parameters: {
             query?: never;
             header?: {
@@ -1250,7 +1250,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["NoticeView"];
+                    "*/*": components["schemas"]["NotificationView"];
                 };
             };
             /** @description Error (RFC 7807 problem details) */
