@@ -33,6 +33,8 @@ const REQUEST_HEADERS_DROPPED = [
   "transfer-encoding",
   "upgrade",
   "content-length",
+  HTTP_HEADERS.INTERNAL_KEY.toLowerCase(),
+  HTTP_HEADERS.USER_ID.toLowerCase(),
 ];
 const RESPONSE_HEADERS_DROPPED = [
   "connection",
@@ -40,13 +42,18 @@ const RESPONSE_HEADERS_DROPPED = [
   "transfer-encoding",
   "content-encoding",
   "content-length",
+  HTTP_HEADERS.INTERNAL_KEY.toLowerCase(),
+  HTTP_HEADERS.USER_ID.toLowerCase(),
 ];
 
 function problem(status: number, code: string, detail: string, instance: string): Response {
   const body: ApiErrorBody = { status, code, detail, instance };
   return new Response(JSON.stringify(body), {
     status,
-    headers: { [HTTP_HEADERS.CONTENT_TYPE]: MEDIA_TYPES.PROBLEM_JSON },
+    headers: {
+      [HTTP_HEADERS.CONTENT_TYPE]: MEDIA_TYPES.PROBLEM_JSON,
+      [HTTP_HEADERS.CACHE_CONTROL]: "no-store",
+    },
   });
 }
 
@@ -89,6 +96,7 @@ async function proxy(request: NextRequest, { params }: { params: Promise<{ path:
 
   const responseHeaders = new Headers(upstream.headers);
   for (const name of RESPONSE_HEADERS_DROPPED) responseHeaders.delete(name);
+  responseHeaders.set(HTTP_HEADERS.CACHE_CONTROL, "no-store");
   return new Response(upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,

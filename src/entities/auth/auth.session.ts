@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { getQueryClient } from "@/shared/api/queryClient";
 import { configureAuth } from "@/shared/api/http";
 import { authApi } from "./auth.api";
 import { REFRESHABLE_AUTH_CODES } from "./auth.constants";
@@ -47,6 +48,7 @@ export function setTokens(tokens: AuthTokens | null): void {
   } catch {
     // Storage blocked: the session lasts until the tab closes.
   }
+  if (tokens === null) getQueryClient().removeQueries();
   emit({ tokens, hydrated: true });
 }
 
@@ -58,7 +60,10 @@ if (typeof window !== "undefined") {
   snapshot = { tokens: readStorage(), hydrated: true };
   // Another tab signing in or out rewrites the same key.
   window.addEventListener("storage", (event) => {
-    if (event.key === STORAGE_KEY) emit({ tokens: readStorage(), hydrated: true });
+    if (event.key === STORAGE_KEY) {
+      getQueryClient().removeQueries();
+      emit({ tokens: readStorage(), hydrated: true });
+    }
   });
 }
 

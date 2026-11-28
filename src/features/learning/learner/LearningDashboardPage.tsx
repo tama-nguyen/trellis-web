@@ -28,7 +28,7 @@ import {
 } from "@/entities/learning/progress.fixtures";
 import { type Achievement, type LearningStat } from "@/entities/learning/progress.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
@@ -109,7 +109,11 @@ export function LearningDashboardPage() {
         </section>
 
         <section className="flex flex-col gap-3">
-          <SectionHeader title={t("continueTitle")} actionLabel={t("continueViewAll")} href={ROUTES.learn} />
+          <SectionHeader
+            title={t("continueTitle")}
+            actionLabel={t("continueViewAll")}
+            href={LEARNING_ROUTES.learn}
+          />
           <div className="flex flex-col gap-3">
             {CONTINUE_LEARNING.map((course) => (
               <ContinueRow key={course.slug} course={course} />
@@ -121,7 +125,7 @@ export function LearningDashboardPage() {
           <SectionHeader
             title={t("recommendedTitle")}
             actionLabel={t("recommendedViewAll")}
-            href={ROUTES.catalog}
+            href={LEARNING_ROUTES.catalog}
           />
           <div className="grid gap-3 sm:grid-cols-2">
             {recommended.map((course) => (
@@ -168,7 +172,7 @@ function HeroCard({ resumed }: { resumed: CourseInProgress | undefined }) {
             variant="primary"
             className="mt-5"
             endContent={<Icon icon={ArrowRight} size="sm" />}
-            href={ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}
+            href={LEARNING_ROUTES.learnCourse(CONTINUE_LEARNING[0]?.slug ?? "")}
             label={t("continueCta")}
           />
         </div>
@@ -235,7 +239,7 @@ function ContinueRow({ course }: { course: CourseInProgress }) {
         variant="secondary"
         size="sm"
         endContent={<Icon icon={ChevronRight} size="sm" />}
-        href={ROUTES.learnCourse(course.slug)}
+        href={LEARNING_ROUTES.learnCourse(course.slug)}
         label={t("continueAction")}
       />
     </article>
@@ -284,7 +288,7 @@ function RecommendedCard({
             variant="primary"
             size="sm"
             isIconOnly
-            href={ROUTES.learnCourse(slug)}
+            href={LEARNING_ROUTES.learnCourse(slug)}
             label={title}
             icon={<Icon icon={Play} size="sm" />}
           />
@@ -300,7 +304,10 @@ function AchievementsCard({ achievements }: { achievements: readonly Achievement
     <section className="rounded-card border border-border bg-surface p-5">
       <header className="mb-4 flex items-center justify-between gap-3">
         <h2 className="text-base font-semibold text-fg">{t("achievementsTitle")}</h2>
-        <Link href={ROUTES.learn} className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg">
+        <Link
+          href={LEARNING_ROUTES.learn}
+          className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg"
+        >
           {t("achievementsViewAll")}
           <Icon icon={ChevronRight} size="sm" />
         </Link>

@@ -1,7 +1,9 @@
 {
-  "$comment": "The API contract package this app is written against (decision T22). trellis-backend's pipeline generates the OpenAPI client and the GraphQL schema/operation types and publishes them here; this repo only consumes them. `npm run contracts:check` reads this file.",
+  "$comment": "The API contract package this app is written against (decision T22). trellis-backend's pipeline generates the OpenAPI client and the GraphQL schema. Web generates its own UI operation types. `npm run contracts:check` reads this file.",
   "package": "@trellis/contracts",
   "version": "0.1.0",
   "published": false,
-  "generatedDirs": ["src/shared/api/generated", "src/shared/graphql/generated"]
+  "generatedDirs": ["src/shared/api/generated"],
+  "schemaRepository": "tama-nguyen/trellis-backend",
+  "schemaRevision": "0b8f1015a2d6651ff07966f4f675f05aaa622adb"
 }

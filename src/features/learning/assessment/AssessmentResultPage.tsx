@@ -28,7 +28,8 @@ import {
   type QuestionResult,
 } from "@/entities/learning/assessment.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { ASSESSMENT_ROUTES } from "@/shared/constants/routes/assessment.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
@@ -76,7 +77,7 @@ export function AssessmentResultPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8 md:px-6">
       <Link
-        href={ROUTES.learnCourse("chinese-i-foundations")}
+        href={LEARNING_ROUTES.learnCourse("chinese-i-foundations")}
         className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg"
       >
         <Icon icon={ArrowLeft} size="sm" />
@@ -171,7 +172,7 @@ export function AssessmentResultPage() {
               variant="secondary"
               className="w-full"
               icon={<Icon icon={RotateCcw} size="sm" />}
-              href={ROUTES.assessmentStart(result.assessmentId)}
+              href={ASSESSMENT_ROUTES.assessmentStart(result.assessmentId)}
               label={t("tryAgain")}
             />
           </aside>

@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { type CourseEdition } from "@/entities/learning/course.types";
 import { ENROLMENT_RESULTS, type EnrolmentResult } from "@/entities/learning/learning.constants";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
 import { Dialog, DialogHeader } from "@astryxdesign/core/Dialog";
@@ -82,7 +82,7 @@ export function EnrolDialog({
           <Button
             variant="primary"
             endContent={<Icon icon={ArrowRight} size="sm" />}
-            href={ROUTES.learnCourse(courseSlug)}
+            href={LEARNING_ROUTES.learnCourse(courseSlug)}
             label={t("startLearning")}
           />
         ) : (

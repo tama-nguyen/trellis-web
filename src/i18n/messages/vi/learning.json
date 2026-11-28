@@ -147,11 +147,19 @@
     "languageChip": "{language} ({count})",
     "facet": "{label} ({count})",
     "enrol": "Đăng ký",
+    "enrolledStatus": "Đã ghi danh",
     "viewCourse": "Xem khoá học",
     "save": "Lưu khoá học",
     "unsave": "Bỏ lưu",
     "emptyTitle": "Không có khoá học nào khớp bộ lọc",
-    "emptyDescription": "Bỏ bớt một bộ lọc hoặc tìm chủ đề khác."
+    "emptyDescription": "Bỏ bớt một bộ lọc hoặc tìm chủ đề khác.",
+    "statusLabel": "Trạng thái khóa học",
+    "allStatuses": "Tất cả trạng thái",
+    "statuses": {
+      "ACTIVE": "Đang hoạt động",
+      "DRAFT": "Bản nháp",
+      "ARCHIVED": "Đã lưu trữ"
+    }
   },
   "player": {
     "breadcrumbLabel": "Đường dẫn",
@@ -630,20 +638,22 @@
     "note": "Progress is rebuilt in the background, so it can trail a few minutes behind what you just did."
   },
   "progressPage": {
-    "title": "Progress",
-    "description": "Where you are across every course you are enrolled in.",
-    "coursesEnrolled": "Courses enrolled",
-    "lessonsCompleted": "Lessons completed",
-    "lessonsOf": "{done} of {total}",
-    "studyTime": "Study time",
-    "streak": "Current streak",
-    "streakValue": "{count, plural, one {# day} other {# days}}",
-    "coursesTitle": "By course",
-    "gradeLabel": "Grade",
-    "gradeNone": "Not graded yet",
-    "gradeNote": "Grades come from the assessment record, not from this summary.",
-    "emptyTitle": "Nothing to show yet",
-    "emptyDescription": "Enrol in a course and your progress appears here."
+    "title": "Tiến độ học tập",
+    "description": "Theo dõi tiến trình của các khóa học bạn đã đăng ký.",
+    "overallTitle": "Tiến độ tổng thể",
+    "coursesCount": "{count} khóa học",
+    "coursesEnrolled": "Khóa học đã đăng ký",
+    "lessonsCompleted": "bài học đã hoàn thành",
+    "lessonsOf": "{done}/{total}",
+    "studyTime": "Thời gian học",
+    "streak": "Chuỗi ngày học",
+    "streakValue": "{count} ngày",
+    "coursesTitle": "Tiến độ theo khóa học",
+    "gradeLabel": "Điểm",
+    "gradeNone": "Chưa có điểm",
+    "gradeNote": "Điểm lấy từ hồ sơ đánh giá, không tính từ phần tổng hợp tiến độ này.",
+    "emptyTitle": "Chưa có tiến độ",
+    "emptyDescription": "Đăng ký một khóa học để theo dõi tiến độ tại đây."
   },
   "achievementsPage": {
     "title": "Achievements",

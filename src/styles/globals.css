@@ -106,6 +106,7 @@
   /* Page-level motion is slower than control feedback: it moves more pixels and runs once. */
   --duration-entrance: 640ms;
   --duration-ambient: 6s;
+  --duration-drift: 8s;
   --duration-meter: 1200ms;
   --duration-caret: 1s;
   --duration-marquee: 40s;
@@ -121,6 +122,12 @@
   --animate-grow-x: grow-x var(--duration-entrance) var(--ease-emphasized) both;
   /* Floating cards over a picture drift a few pixels, forever, so the hero does not look frozen. */
   --animate-float: float var(--duration-ambient) ease-in-out infinite alternate;
+  /* Stickers follow small closed paths, so their movement stays inside the clipped hero panels. */
+  --animate-drift-right-down: drift-right-down var(--duration-drift) ease-in-out infinite;
+  --animate-drift-left-down: drift-left-down var(--duration-drift) ease-in-out infinite;
+  --animate-drift-right-up: drift-right-up var(--duration-drift) ease-in-out infinite;
+  --animate-drift-left-up: drift-left-up var(--duration-drift) ease-in-out infinite;
+  --animate-drift-center: drift-center var(--duration-drift) ease-in-out infinite;
   /* A bar of a chart rising from its baseline; the bar grows from its bottom edge. */
   --animate-grow-y: grow-y var(--duration-entrance) var(--ease-emphasized) both;
   /* A ProgressRing drawing itself up to its value (the ring sets --ring-circumference). */
@@ -187,6 +194,67 @@
   @keyframes float {
     to {
       translate: 0 -0.5rem;
+    }
+  }
+
+  /* Returning to the starting point makes each ambient path loop without a visible jump. */
+  @keyframes drift-right-down {
+    25% {
+      translate: 0.75rem 0.25rem;
+    }
+    50% {
+      translate: 1.25rem 0.75rem;
+    }
+    75% {
+      translate: 0.5rem 1rem;
+    }
+  }
+
+  @keyframes drift-left-down {
+    25% {
+      translate: -0.75rem 0.25rem;
+    }
+    50% {
+      translate: -1.25rem 0.75rem;
+    }
+    75% {
+      translate: -0.5rem 1rem;
+    }
+  }
+
+  @keyframes drift-right-up {
+    25% {
+      translate: 0.75rem -0.25rem;
+    }
+    50% {
+      translate: 1.25rem -0.75rem;
+    }
+    75% {
+      translate: 0.5rem -1rem;
+    }
+  }
+
+  @keyframes drift-left-up {
+    25% {
+      translate: -0.75rem -0.25rem;
+    }
+    50% {
+      translate: -1.25rem -0.75rem;
+    }
+    75% {
+      translate: -0.5rem -1rem;
+    }
+  }
+
+  @keyframes drift-center {
+    25% {
+      translate: 1rem -0.5rem;
+    }
+    50% {
+      translate: 0.25rem -1rem;
+    }
+    75% {
+      translate: -0.75rem -0.5rem;
     }
   }
 

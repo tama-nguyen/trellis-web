@@ -1,7 +1,8 @@
 import { ArrowRight } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import { MARKETING_STATS } from "@/entities/marketing/marketing.fixtures";
-import { ROUTES } from "@/shared/constants/routes";
+import { MARKETING_ROUTES } from "@/shared/constants/routes/marketing.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { Grid } from "@astryxdesign/core/Grid";
 import { HStack } from "@astryxdesign/core/HStack";
@@ -38,14 +39,14 @@ export function HomeHero() {
                 size="lg"
                 className="group rounded-full bg-fg text-canvas hover:bg-fg-muted"
                 endContent={<Icon icon={ArrowRight} size="sm" className={ARROW_CLASSES} />}
-                href={ROUTES.learn}
+                href={LEARNING_ROUTES.learn}
                 label={t("ctaPrimary")}
               />
               <Button
                 variant="secondary"
                 size="lg"
                 className="rounded-full"
-                href={ROUTES.courses}
+                href={MARKETING_ROUTES.courses}
                 label={t("ctaSecondary")}
               />
             </HStack>

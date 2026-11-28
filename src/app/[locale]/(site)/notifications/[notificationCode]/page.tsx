@@ -1,15 +1,11 @@
-import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
+import { createLocalizedMetadata } from "@/i18n/metadata";
 import { NotificationDetailPage } from "@/features/notification/pages/NotificationDetailPage";
 import type { Locale } from "@/i18n/routing";
 
 type NotificationDetailRouteProps = { params: Promise<{ locale: Locale; notificationCode: string }> };
 
-export async function generateMetadata({ params }: NotificationDetailRouteProps): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "notification.detail" });
-  return { title: t("title") };
-}
+export const generateMetadata = createLocalizedMetadata("notification.detail.title");
 
 export default async function NotificationDetailRoute({ params }: NotificationDetailRouteProps) {
   const { locale, notificationCode } = await params;

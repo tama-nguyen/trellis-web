@@ -1,7 +1,7 @@
 import { Icon } from "@astryxdesign/core/Icon";
 import { SearchX } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
-import { ROUTES } from "@/shared/constants/routes";
+import { SITE_ROUTES } from "@/shared/constants/routes/site.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
 import { PageShell } from "@/ui/layout/PageShell";
@@ -14,7 +14,7 @@ export default function NotFound() {
         icon={<Icon icon={SearchX} size="lg" />}
         title={t("states.notFoundTitle")}
         description={t("states.notFoundDescription")}
-        actions={<Button variant="secondary" size="sm" href={ROUTES.home} label={t("nav.home")} />}
+        actions={<Button variant="secondary" size="sm" href={SITE_ROUTES.home} label={t("nav.home")} />}
       />
     </PageShell>
   );

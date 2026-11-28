@@ -42,7 +42,7 @@ import { Icon } from "@astryxdesign/core/Icon";
 import { Selector } from "@astryxdesign/core/Selector";
 import { TextArea } from "@astryxdesign/core/TextArea";
 import { TextInput } from "@astryxdesign/core/TextInput";
-import { ROUTES } from "@/shared/constants/routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { CourseArtwork } from "../shared/CourseArtwork";
 import { StudioDetailsTab } from "./StudioDetailsTab";
 import { StudioSettingsTab } from "./StudioSettingsTab";
@@ -101,7 +101,7 @@ export function CourseStudioPage() {
             <Button
               variant="primary"
               icon={<Icon icon={Upload} size="sm" />}
-              href={ROUTES.studioPublish(course.slug)}
+              href={STUDIO_ROUTES.studioPublish(course.slug)}
               label={t("publish")}
             />
           </div>

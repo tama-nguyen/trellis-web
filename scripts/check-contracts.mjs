@@ -1,29 +1,6 @@
 /**
- * Checks that this app and the backend's API contract package agree (decision T22).
- *
- * The backend owns `contracts/`; its pipeline generates the OpenAPI client plus the GraphQL schema
- * and operation types and publishes them as an npm package in the GitLab Package Registry. This
- * repo never generates them: there is nothing to regenerate here, only a version to agree on.
- *
- *   npm run contracts:check
- *
- * Two modes, selected by `published` in scripts/contracts.json:
- *
- *   published: false  (today)  The package does not exist yet, so the last generated output is
- *                              committed under src/shared/{api,graphql}/generated/. The check makes
- *                              sure those files are still there and still carry their generated
- *                              header, and prints what flips once the package is published.
- *   published: true   (after)  src/shared/{api,graphql}/generated/ is deleted, @trellis/contracts is
- *                              an exact-pinned dependency, and the check makes sure the pin, the
- *                              installed package and scripts/contracts.json all name one version.
- *
- * Flipping over (one change, when trellis-backend publishes its first package version):
- *   1. npm install --save-exact @trellis/contracts@<version> (needs the registry env vars, see .npmrc)
- *   2. delete src/shared/api/generated/ and src/shared/graphql/generated/
- *   3. point the imports in src/shared/api/apiRequest.ts, src/shared/graphql/executeGraphql.ts and
- *      the entities at @trellis/contracts
- *   4. set "published": true and "version" in scripts/contracts.json
- *   5. drop the generated-directory entries from .prettierignore and eslint.config.mjs
+ * Verify the backend-owned REST snapshot or published package pin. The companion
+ * generate-operations.mjs check validates web-owned GraphQL operations against the backend schema.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -119,7 +96,7 @@ if (contracts.published) {
   console.log(
     `API contracts OK: using the committed client for ${contracts.package}@${contracts.version}, ` +
       `which trellis-backend has not published yet.\n` +
-      `  Nothing is generated in this repo. When the package lands, follow the steps at the top of ` +
+      `  UI operation types are checked separately. For REST package migration see ` +
       `scripts/check-contracts.mjs.`,
   );
 }

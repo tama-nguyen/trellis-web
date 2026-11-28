@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { NOTIFICATION_ERROR_MESSAGES } from "@/entities/notification/notification.constants";
 import { useNotification } from "@/entities/notification/notification.queries";
 import { getApiErrorMessage } from "@/shared/api/errors";
-import { ROUTES } from "@/shared/constants/routes";
+import { NOTIFICATION_ROUTES } from "@/shared/constants/routes/notification.routes";
 import { formatDateTime } from "@/shared/lib/format";
 import { screenStateOf } from "@/shared/lib/screenState";
 import { Button } from "@astryxdesign/core/Button";
@@ -28,7 +28,7 @@ export function NotificationDetailPage({ notificationCode }: { notificationCode:
       variant="ghost"
       size="sm"
       icon={<Icon icon={ArrowLeft} size="sm" />}
-      href={ROUTES.notifications}
+      href={NOTIFICATION_ROUTES.notifications}
       label={t("back")}
     />
   );

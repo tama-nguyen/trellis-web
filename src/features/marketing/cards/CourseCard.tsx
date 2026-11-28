@@ -2,7 +2,7 @@ import { Star } from "@/ui/icons/lucide";
 import { useTranslations } from "next-intl";
 import type { FeaturedCourse } from "@/entities/marketing/marketing.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Icon } from "@astryxdesign/core/Icon";
 import { CourseThumbnail } from "@/features/learning/shared/CourseThumbnail";
@@ -31,7 +31,7 @@ export function CourseCard({ course }: { course: FeaturedCourse }) {
 
   return (
     <Link
-      href={ROUTES.catalogCourse(course.slug)}
+      href={LEARNING_ROUTES.catalogCourse(course.slug)}
       className="group relative flex h-full flex-col gap-3 rounded-card"
     >
       <CourseThumbnail

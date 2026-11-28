@@ -11,7 +11,8 @@ import {
 import { type AssessmentQuestion } from "@/entities/learning/assessment.types";
 import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { ASSESSMENT_ROUTES } from "@/shared/constants/routes/assessment.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { Dialog, DialogHeader } from "@astryxdesign/core/Dialog";
 import { cn } from "@/ui/lib/cn";
@@ -65,7 +66,7 @@ export function AssessmentPage() {
               <span className="text-sm font-semibold text-fg">{useBrand()}</span>
             </span>
             <Link
-              href={ROUTES.learnCourse("chinese-i-foundations")}
+              href={LEARNING_ROUTES.learnCourse("chinese-i-foundations")}
               className="flex items-center gap-1 border-l border-border pl-4 text-sm text-fg-muted hover:text-fg"
             >
               <Icon icon={ArrowLeft} size="sm" />
@@ -392,7 +393,7 @@ function SubmitConfirmDialog({
             <Button variant="secondary" onClick={() => onOpenChange(false)} label={t("cancel")} />
             <Button
               variant="primary"
-              href={ROUTES.assessmentResult(assessmentId, "attempt-2")}
+              href={ASSESSMENT_ROUTES.assessmentResult(assessmentId, "attempt-2")}
               label={t("confirm")}
             />
           </>

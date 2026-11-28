@@ -5,7 +5,7 @@ import { ArrowRight, CalendarClock, ChevronRight, LayoutGrid } from "@/ui/icons/
 import { useTranslations } from "next-intl";
 import { MY_COURSES } from "@/entities/learning/course.fixtures";
 import { type MyCourseRow } from "@/entities/learning/course.types";
-import { ROUTES } from "@/shared/constants/routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
@@ -36,7 +36,7 @@ export function MyCoursesPage() {
             <Button
               variant="primary"
               endContent={<Icon icon={ArrowRight} size="sm" />}
-              href={ROUTES.catalog}
+              href={LEARNING_ROUTES.catalog}
               label={t("emptyAction")}
             />
           }
@@ -94,7 +94,7 @@ function CourseRow({ course }: { course: MyCourseRow }) {
         variant={isStarted ? "secondary" : "primary"}
         size="sm"
         endContent={<Icon icon={ChevronRight} size="sm" />}
-        href={ROUTES.learnCourse(course.slug)}
+        href={LEARNING_ROUTES.learnCourse(course.slug)}
         label={isStarted ? t("continueAction") : t("startAction")}
       />
     </article>

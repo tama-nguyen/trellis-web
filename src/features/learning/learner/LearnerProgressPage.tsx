@@ -1,19 +1,32 @@
 "use client";
 
-import { BookOpen, CircleCheck, Clock, Flame } from "@/ui/icons/lucide";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+
+import { BookOpen, Clock, Flame } from "@/ui/icons/lucide";
 import type { LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { CATALOG_COURSES } from "@/entities/learning/course.fixtures";
 import { COURSE_PROGRESS, PROGRESS_SUMMARY } from "@/entities/learning/progress.fixtures";
 import type { CourseProgressRow } from "@/entities/learning/progress.types";
-import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
 import { Badge } from "@astryxdesign/core/Badge";
+import { Card } from "@astryxdesign/core/Card";
 import { EmptyState } from "@astryxdesign/core/EmptyState";
+import { Grid } from "@astryxdesign/core/Grid";
+import { HStack } from "@astryxdesign/core/HStack";
 import { Icon } from "@astryxdesign/core/Icon";
+import { List, ListItem } from "@astryxdesign/core/List";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
+import { Section } from "@astryxdesign/core/Section";
+import { Heading, Text } from "@astryxdesign/core/Text";
+import { VStack } from "@astryxdesign/core/VStack";
 import { AsOfBadge } from "../shell/AsOfBadge";
 import { PageHeading } from "../shell/PageHeading";
+import { CourseArtwork } from "../shared/CourseArtwork";
 import { useDurationLabel } from "@/features/learning/hooks/useDurationLabel";
+
+const COURSE_LIST_EDGE = "flush" as const;
+const COURSE_LIST_DENSITY = "balanced" as const;
+const COURSE_ARTWORK_SIZES = "44px";
 
 /** M4 — progress and grades. The summary is a projection; the grade is not. */
 export function LearnerProgressPage() {
@@ -21,32 +34,50 @@ export function LearnerProgressPage() {
   const durationLabel = useDurationLabel();
   const summary = PROGRESS_SUMMARY;
   const courses = COURSE_PROGRESS;
+  const overallPercent = summary.lessonsTotal
+    ? Math.round((summary.lessonsCompleted / summary.lessonsTotal) * 100)
+    : 0;
+  const summaryStats: readonly { icon: LucideIcon; label: string; value: string }[] = [
+    { icon: BookOpen, label: t("coursesEnrolled"), value: String(summary.coursesEnrolled) },
+    { icon: Clock, label: t("studyTime"), value: durationLabel(summary.studyMinutes) },
+    { icon: Flame, label: t("streak"), value: t("streakValue", { count: summary.currentStreakDays }) },
+  ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <VStack gap={8}>
       <PageHeading
         title={t("title")}
         description={t("description")}
         actions={<AsOfBadge asOf={summary.asOf} />}
       />
 
-      <dl className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <Tile icon={BookOpen} term={t("coursesEnrolled")} value={`${summary.coursesEnrolled}`} />
-        <Tile
-          icon={CircleCheck}
-          term={t("lessonsCompleted")}
-          value={t("lessonsOf", { done: summary.lessonsCompleted, total: summary.lessonsTotal })}
-        />
-        <Tile icon={Clock} term={t("studyTime")} value={durationLabel(summary.studyMinutes)} />
-        <Tile
-          icon={Flame}
-          term={t("streak")}
-          value={t("streakValue", { count: summary.currentStreakDays })}
-        />
-      </dl>
+      <Card padding={5} className="rounded-card">
+        <Grid columns={{ minWidth: 280, max: 2, repeat: "fit" }} gap={6} align="center">
+          <VStack gap={3} className="min-w-0">
+            <Text type="supporting" color="secondary">
+              {t("overallTitle")}
+            </Text>
+            <HStack gap={3} wrap="wrap" vAlign="center">
+              <Heading level={2} type="display-2" weight="bold">
+                {overallPercent}%
+              </Heading>
+              <Text type="body" color="secondary">
+                {t("lessonsOf", { done: summary.lessonsCompleted, total: summary.lessonsTotal })}{" "}
+                {t("lessonsCompleted")}
+              </Text>
+            </HStack>
+            <ProgressBar value={overallPercent} label={t("overallTitle")} isLabelHidden />
+          </VStack>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-base font-semibold text-fg">{t("coursesTitle")}</h2>
+          <VStack as="ul" gap={0}>
+            {summaryStats.map((stat) => (
+              <ProgressStat key={stat.label} {...stat} />
+            ))}
+          </VStack>
+        </Grid>
+      </Card>
+
+      <Section variant="transparent" padding={0}>
         {courses.length === 0 ? (
           <EmptyState
             icon={<Icon icon={BookOpen} size="lg" />}
@@ -54,61 +85,99 @@ export function LearnerProgressPage() {
             description={t("emptyDescription")}
           />
         ) : (
-          <ul className="flex flex-col gap-3">
+          <List
+            header={
+              <HStack gap={3} wrap="wrap" vAlign="center" hAlign="between">
+                <Heading level={2}>{t("coursesTitle")}</Heading>
+                <Text type="supporting" color="secondary">
+                  {t("coursesCount", { count: courses.length })}
+                </Text>
+              </HStack>
+            }
+            hasDividers
+            edge={COURSE_LIST_EDGE}
+            density={COURSE_LIST_DENSITY}
+          >
             {courses.map((course) => (
-              <li key={course.slug}>
-                <CourseProgressCard course={course} />
-              </li>
+              <CourseProgressItem key={course.slug} course={course} />
             ))}
-          </ul>
+          </List>
         )}
-        <p className="text-xs text-fg-subtle">{t("gradeNote")}</p>
-      </section>
-    </div>
+        <Text as="p" type="supporting" color="secondary" className="mt-4">
+          {t("gradeNote")}
+        </Text>
+      </Section>
+    </VStack>
   );
 }
 
-function Tile({ icon, term, value }: { icon: LucideIcon; term: string; value: string }) {
+function ProgressStat({ icon, label, value }: { icon: LucideIcon; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-card border border-border bg-surface p-4">
-      <span className="grid size-10 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
-        <Icon icon={icon} size="md" />
-      </span>
-      <div className="min-w-0">
-        <dd className="text-xl font-semibold text-fg">{value}</dd>
-        <dt className="text-xs text-fg-muted">{term}</dt>
-      </div>
-    </div>
+    <HStack
+      as="li"
+      gap={3}
+      vAlign="center"
+      className="border-t border-border py-3 first:border-t-0 first:pt-0"
+    >
+      <Icon icon={icon} size="sm" className="shrink-0 text-fg-subtle" />
+      <Text type="supporting" color="secondary" className="min-w-0 flex-1">
+        {label}
+      </Text>
+      <Text as="span" type="body" weight="semibold" hasTabularNumbers>
+        {value}
+      </Text>
+    </HStack>
   );
 }
 
-function CourseProgressCard({ course }: { course: CourseProgressRow }) {
+function CourseProgressItem({ course }: { course: CourseProgressRow }) {
   const t = useTranslations("learning.progressPage");
+  const courseArt = CATALOG_COURSES.find((catalogCourse) => catalogCourse.slug === course.slug)?.art;
+
   return (
-    <article className="flex flex-wrap items-center gap-4 rounded-card border border-border bg-surface p-4">
-      <div className="min-w-0 flex-1 basis-64">
-        <Link
-          href={ROUTES.learnCourse(course.slug)}
-          className="text-sm font-semibold text-fg hover:text-fg-brand"
-        >
-          {course.title}
-        </Link>
-        <p className="mt-1 text-xs text-fg-muted">
-          {t("lessonsOf", { done: course.lessonsCompleted, total: course.lessonsTotal })}
-        </p>
-        <div className="mt-2 flex items-center gap-2">
-          <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
-          <span className="shrink-0 text-xs text-fg-muted">{course.percentComplete}%</span>
-        </div>
-      </div>
-      <div className="flex flex-col items-end gap-1">
-        <span className="text-xs text-fg-muted">{t("gradeLabel")}</span>
-        {course.grade === undefined ? (
-          <Badge label={t("gradeNone")} />
+    <ListItem
+      href={LEARNING_ROUTES.learnCourse(course.slug)}
+      align="start"
+      startContent={
+        courseArt ? (
+          <CourseArtwork
+            art={courseArt}
+            title=""
+            sizes={COURSE_ARTWORK_SIZES}
+            className="size-11 shrink-0 rounded-control"
+          />
         ) : (
-          <span className="text-lg font-semibold text-fg">{course.grade}</span>
-        )}
-      </div>
-    </article>
+          <Icon icon={BookOpen} size="md" className="text-fg-subtle" />
+        )
+      }
+      label={<Text weight="semibold">{course.title}</Text>}
+      description={
+        <VStack gap={2} className="mt-1 min-w-0">
+          <HStack gap={3} vAlign="center" hAlign="between">
+            <Text type="supporting" color="secondary">
+              {t("lessonsOf", { done: course.lessonsCompleted, total: course.lessonsTotal })}
+            </Text>
+            <Text type="supporting" color="secondary" weight="semibold" hasTabularNumbers>
+              {course.percentComplete}%
+            </Text>
+          </HStack>
+          <ProgressBar isLabelHidden value={course.percentComplete} label={course.title} />
+        </VStack>
+      }
+      endContent={
+        <VStack gap={1} hAlign="end" className="min-w-24">
+          <Text type="supporting" color="secondary">
+            {t("gradeLabel")}
+          </Text>
+          {course.grade === undefined ? (
+            <Badge variant="neutral" label={t("gradeNone")} />
+          ) : (
+            <Text type="large" weight="semibold" hasTabularNumbers>
+              {course.grade}
+            </Text>
+          )}
+        </VStack>
+      }
+    />
   );
 }

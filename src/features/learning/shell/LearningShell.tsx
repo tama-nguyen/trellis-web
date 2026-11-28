@@ -33,7 +33,9 @@ import { SHELL_ROLES, type ShellRole } from "@/entities/learning/learning.consta
 import { SAMPLE_LEARNER } from "@/entities/learning/progress.fixtures";
 import { ASSESSMENT_DRAFT, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import { Link, usePathname } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { SITE_ROUTES } from "@/shared/constants/routes/site.routes";
+import { LEARNING_ROUTES } from "@/shared/constants/routes/learning.routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
 import { Icon } from "@astryxdesign/core/Icon";
@@ -57,20 +59,20 @@ const LEARNER_NAV: readonly NavGroup[] = [
   {
     titleKey: null,
     items: [
-      { key: "dashboard", icon: Home, href: ROUTES.learn },
-      { key: "myCourses", icon: BookOpen, href: ROUTES.myCourses },
-      { key: "catalog", icon: LayoutGrid, href: ROUTES.catalog },
-      { key: "progress", icon: BarChart3, href: ROUTES.learnProgress },
-      { key: "achievements", icon: Award, href: ROUTES.learnAchievements },
-      { key: "messages", icon: MessageSquare, href: ROUTES.learnMessages, hasDot: true },
+      { key: "dashboard", icon: Home, href: LEARNING_ROUTES.learn },
+      { key: "myCourses", icon: BookOpen, href: LEARNING_ROUTES.myCourses },
+      { key: "catalog", icon: LayoutGrid, href: LEARNING_ROUTES.catalog },
+      { key: "progress", icon: BarChart3, href: LEARNING_ROUTES.learnProgress },
+      { key: "achievements", icon: Award, href: LEARNING_ROUTES.learnAchievements },
+      { key: "messages", icon: MessageSquare, href: LEARNING_ROUTES.learnMessages, hasDot: true },
     ],
   },
   {
     titleKey: "toolsLabel",
     items: [
-      { key: "notes", icon: FileText, href: ROUTES.learnNotes },
-      { key: "bookmarks", icon: Bookmark, href: ROUTES.learnBookmarks },
-      { key: "studyPlan", icon: Calendar, href: ROUTES.learnStudyPlan },
+      { key: "notes", icon: FileText, href: LEARNING_ROUTES.learnNotes },
+      { key: "bookmarks", icon: Bookmark, href: LEARNING_ROUTES.learnBookmarks },
+      { key: "studyPlan", icon: Calendar, href: LEARNING_ROUTES.learnStudyPlan },
     ],
   },
 ];
@@ -79,24 +81,24 @@ const INSTRUCTOR_NAV: readonly NavGroup[] = [
   {
     titleKey: null,
     items: [
-      { key: "dashboard", icon: Home, href: ROUTES.learn },
-      { key: "myCourses", icon: BookOpen, href: ROUTES.studio },
-      { key: "catalog", icon: LayoutGrid, href: ROUTES.catalog },
-      { key: "students", icon: Users, href: ROUTES.studioStudents },
-      { key: "grading", icon: ClipboardCheck, href: ROUTES.studioGrading },
-      { key: "analytics", icon: BarChart3, href: ROUTES.studioAnalytics },
-      { key: "messages", icon: MessageSquare, href: ROUTES.learnMessages, hasDot: true },
+      { key: "dashboard", icon: Home, href: LEARNING_ROUTES.learn },
+      { key: "myCourses", icon: BookOpen, href: STUDIO_ROUTES.studio },
+      { key: "catalog", icon: LayoutGrid, href: LEARNING_ROUTES.catalog },
+      { key: "students", icon: Users, href: STUDIO_ROUTES.studioStudents },
+      { key: "grading", icon: ClipboardCheck, href: STUDIO_ROUTES.studioGrading },
+      { key: "analytics", icon: BarChart3, href: STUDIO_ROUTES.studioAnalytics },
+      { key: "messages", icon: MessageSquare, href: LEARNING_ROUTES.learnMessages, hasDot: true },
     ],
   },
   {
     titleKey: "instructorToolsLabel",
     items: [
-      { key: "courseStudio", icon: Pencil, href: ROUTES.studioCourse(STUDIO_COURSE.slug) },
-      { key: "assessments", icon: ClipboardCheck, href: ROUTES.studioAssessment(ASSESSMENT_DRAFT.id) },
-      { key: "assignments", icon: NotebookPen, href: ROUTES.studioAssignments },
-      { key: "questionBank", icon: Library, href: ROUTES.studioQuestionBank },
-      { key: "certificates", icon: Award, href: ROUTES.studioCertificates },
-      { key: "resources", icon: Folder, href: ROUTES.studioResources },
+      { key: "courseStudio", icon: Pencil, href: STUDIO_ROUTES.studioCourse(STUDIO_COURSE.slug) },
+      { key: "assessments", icon: ClipboardCheck, href: STUDIO_ROUTES.studioAssessment(ASSESSMENT_DRAFT.id) },
+      { key: "assignments", icon: NotebookPen, href: STUDIO_ROUTES.studioAssignments },
+      { key: "questionBank", icon: Library, href: STUDIO_ROUTES.studioQuestionBank },
+      { key: "certificates", icon: Award, href: STUDIO_ROUTES.studioCertificates },
+      { key: "resources", icon: Folder, href: STUDIO_ROUTES.studioResources },
     ],
   },
 ];
@@ -162,7 +164,7 @@ function Sidebar({
       )}
     >
       <div className={cn("flex items-center gap-2.5 px-1 py-1", isCollapsed && "flex-col gap-2")}>
-        <Link href={ROUTES.home} className="flex min-w-0 items-center gap-2.5">
+        <Link href={SITE_ROUTES.home} className="flex min-w-0 items-center gap-2.5">
           <span className="grid size-9 shrink-0 place-items-center rounded-control bg-info-subtle text-fg-brand">
             <Icon icon={GraduationCap} size="md" />
           </span>
@@ -310,7 +312,7 @@ function PromoCard({ role }: { role: ShellRole }) {
         variant="primary"
         size="sm"
         className="mt-1 w-full bg-fg text-canvas hover:bg-fg-muted"
-        href={ROUTES.catalog}
+        href={LEARNING_ROUTES.catalog}
         label={isInstructor ? t("studioPromoAction") : t("promoAction")}
       />
     </div>
@@ -375,8 +377,8 @@ function AreaSwitcher({ role }: { role: ShellRole }) {
   const isStudio = role === SHELL_ROLES.INSTRUCTOR;
   return (
     <div aria-label={t("label")} className="mr-1 hidden rounded-control border border-border p-0.5 sm:flex">
-      <AreaLink href={ROUTES.learn} isActive={!isStudio} label={t("learn")} />
-      <AreaLink href={ROUTES.studio} isActive={isStudio} label={t("studio")} />
+      <AreaLink href={LEARNING_ROUTES.learn} isActive={!isStudio} label={t("learn")} />
+      <AreaLink href={STUDIO_ROUTES.studio} isActive={isStudio} label={t("studio")} />
     </div>
   );
 }

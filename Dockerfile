@@ -21,8 +21,7 @@ RUN cd /tmp \
  && test "$(npm --version)" = "${NPM_VERSION}"
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /repo
-# .npmrc points the @trellis scope at the backend's GitLab Package Registry (decision T22). It holds
-# no token: TRELLIS_CONTRACTS_* are passed as secrets by the build when that package is a dependency.
+# Private registry credentials, when needed, are passed as BuildKit secrets rather than build args.
 COPY package.json package-lock.json .npmrc ./
 # `npm ci` fails when package.json and package-lock.json disagree.
 RUN --mount=type=cache,id=trellis-npm-cache,target=/root/.npm \

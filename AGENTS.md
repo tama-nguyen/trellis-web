@@ -16,6 +16,9 @@ Trellis holds **no business domain**: only the platform skeleton and one tiny sa
 
 Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the Node version for nvm.
 
+CI reads runtime/tool versions from these files and `package.json.packageManager`; do not repeat
+them in workflow YAML. Pin action dependencies by full SHA and update them through Dependabot.
+
 ## Code standards
 
 - **Comments explain why**: an external constraint, a warning, a reference. Never restate the code.
@@ -78,7 +81,8 @@ HTTP is native `fetch` behind one client; no axios, no second client.
 | `npm run contracts:check`         | This app and `@trellis/contracts` agree on a version (see below)                     |
 
 Gate before pushing: `npm run contracts:check && npm run typecheck && npm run lint && npm run format:check && npm test && npm run i18n:check && npm run build && npm run budget:check`.
-CI (`.gitlab-ci.yml`) runs exactly these scripts, nothing reimplemented.
+CI (`.github/workflows/ci.yml`) runs these scripts; setup and the manual `run_tests` switch are
+documented in `docs/ci.md`.
 
 ## Agent tooling
 
@@ -151,25 +155,22 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
 - Paged responses of the real backend are keyset pages, `CursorPage<T>` (`items`, `nextCursor`,
   `hasNext`; request with `first` + `after`). Use `useInfiniteQuery` and a "load more" control: there
   is no page number or total. `Page<T>` (0-based `page`) remains for offset endpoints (admin tables).
-- Writes and integrations use REST (generated client); screen read models may use GraphQL
+- Writes, integrations and simple resource reads use REST. Composed screen read models may use GraphQL
   (`/api/graphql`, typed documents next to the entity, e.g. `entities/notification/notification.graphql.ts`).
 
 ## API contracts (decision T22)
 
-Renaming a domain, or looking for the tool behind a generated file: read
-`../trellis-backend/docs/guide/rename-module.md` before searching the code.
-
-**Nothing is generated in this repo.** `contracts/` belongs to `trellis-backend`, because the
+**Web generates UI operation types.** `contracts/` belongs to `trellis-backend`, because the
 backend produces the OpenAPI document and the GraphQL schema. Its pipeline runs the generators and
-publishes one npm package to the GitLab Package Registry of that project; this repo installs it at
+builds one npm package as an artifact; registry publication is deferred. This repo will install it at
 a pinned, exact version and never copies a schema.
 
-| Thing                               | Where it comes from                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------ |
-| Package                             | `@trellis/contracts` (OpenAPI client + GraphQL schema and operation types)     |
-| Registry                            | trellis-backend's GitLab Package Registry, configured in `.npmrc`              |
-| Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                 |
-| Credentials                         | env only: `$CI_JOB_TOKEN` in CI, a `read_api` PAT locally. **Never committed** |
+| Thing                               | Where it comes from                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------ |
+| Package                             | `@trellis/contracts` (OpenAPI client and GraphQL schema)                             |
+| Registry                            | Deferred until backend package publication; current CI uses committed snapshots      |
+| Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                       |
+| Credentials                         | No registry credential needed in current build CI; future tokens stay in environment |
 
 The package name and version scheme are this repo's assumption until the backend publishes its
 first version; reconcile with `trellis-backend` before relying on them. Version scheme: plain
@@ -179,19 +180,19 @@ a contract change.
 **Until the package exists**, the last generated output stays committed under
 `src/shared/api/generated/` (orval, mutator `shared/api/apiRequest.ts`) and
 `src/shared/graphql/generated/` (@graphql-codegen client-preset, `documentMode: string`) so the repo
-builds on its own. `npm run contracts:check` then only verifies that those files are present and still
-carry their generated header.
+builds on its own. With the backend checkout alongside web and its pinned codegen tools installed,
+`npm run contracts:generate` generates the web operation types. `npm run contracts:check`
+validates documents against the exported schema and compares the generated output.
 
 **What flips when the package is published** (the full list is at the top of
-`scripts/check-contracts.mjs`): add the dependency, delete both generated directories, repoint the
-imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
-generated directories from `.prettierignore` and `eslint.config.mjs`. From then on
+`scripts/check-contracts.mjs`): add the dependency, delete the REST snapshot directory, repoint the
+REST imports at `@trellis/contracts`, set `"published": true` in `scripts/contracts.json`, and drop the
+REST snapshot directory from `.prettierignore` and `eslint.config.mjs`. From then on
 `npm run contracts:check` compares the pin, the installed package and `scripts/contracts.json`.
 
 - **Never edit generated files**, in either state. They are excluded from ESLint and Prettier.
 - A `graphql(...)` document in an entity (`entities/notification/notification.graphql.ts`) is an input to the
-  generator. Once generation lives in the backend, changing a document means changing it there too,
-  then consuming a new contracts version.
+  web generator. Keep UI operation generation in web when switching to the published schema.
 - Generated REST functions call `apiRequest` -> `http.ts`, so the token, refresh, `ApiError` and the
   BFF path apply unchanged; pass React Query's signal as the last argument (`{ signal }`).
 - GraphQL documents are plain strings (no graphql-js in the bundle) run by
@@ -231,11 +232,10 @@ to the backend's stack, so there are exactly two ways to run the UI:
 
 ### CI
 
-`.gitlab-ci.yml` is self-contained (the monorepo pipeline stayed in `trellis-backend`): `lint`
-(contracts, typecheck, ESLint, Prettier, i18n parity), `build` (Next build + bundle budget), `test`
-(Vitest with Cobertura + JUnit), `image:build` and, on the default branch, `image:tag-main` and
-`cache:warm:npm`. MR pipelines tag images `mr<iid>-<sha>`, the default branch `sha-<sha>`; jobs are
-`interruptible` and read the npm cache, which only the default branch writes.
+`.github/workflows/ci.yml` verifies source, contracts, Vitest, production
+build, bundle budget and local Docker packaging. Automatic events run tests; manual dispatch can
+set `run_tests=false`. No images/packages are published or deployed. Tool versions come from
+`mise.toml` and package manifests. Setup and limitations: [docs/ci.md](docs/ci.md).
 
 ## Mock backend
 
@@ -243,8 +243,8 @@ to the backend's stack, so there are exactly two ways to run the UI:
 `mocks/domains.ts`. Handlers answer with the backend's contract, typed with the generated types:
 `problem(path, status, CODE, detail)`, `pageOf(items, page, size, view)` for offset pages, cursor
 pages built like `notification.handlers.ts`, and `guard(request, path, permission?)` for auth. A resource
-the caller may not see (another user's, or a STAFF notification for a non-staff reader) answers **404, not
-403**. The notification domain also mocks `POST /api/graphql` for its detail document. Mocks use the same
+the caller may not see (another user's, or a STAFF notice for a non-staff reader) answers **404, not
+403**. The notice domain also mocks `POST /api/graphql` for its composed detail document. Mocks use the same
 constants as the app, never bare literals. Sample accounts: `mocks/auth.seed.ts` (the member has
 `notification:read`; the admin also `notification:read-staff` and `notification:manage`).
 
@@ -289,16 +289,16 @@ values; `local/no-hardcoded-colors` rejects hex/rgb, palette classes, arbitrary 
 arbitrary or raw values that bypass the scales below (`z-[999]`, `z-50`, `duration-[350ms]`,
 `duration-300`, `ease-[...]`, `animate-[...]`, `font-['Arial']`), naming the token to use.
 
-| Family      | Tokens (utility)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Notes                                                                                                                                                                                                                                                                                                                                                 |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Colour      | `canvas`, `surface`, `surface-raised/-warm/-hover/-sunken`, `fg`, `fg-muted/-subtle/-brand`, `brand`, `brand-hover`, `on-brand`, `danger(-subtle)`, `on-danger`, `success(-subtle)`, `warning(-subtle)`, `info(-subtle)`, `border`, `border-strong`, `ring`, `overlay`, `on-overlay` (text over photos and scrims) (`bg-*`, `text-*`, `border-*`...)                                                                                                                                                                           | values in `tokens.css`; the default palette is removed                                                                                                                                                                                                                                                                                                |
-| Font        | `font-sans` (Inter -> system), `font-cjk` (Noto Sans SC -> PingFang SC, Hiragino Sans GB, Microsoft YaHei -> system), `font-mono` (JetBrains Mono -> system mono)                                                                                                                                                                                                                                                                                                                                                              | next/font self-hosts the files at build (no runtime Google request). Body uses `font-sans`; `:lang(zh)` (zh pages and `lang="zh"` snippets on vi/en pages) uses `font-cjk`. Noto Sans SC is loaded only on zh pages (`ZhFontLoader`, a client `next/dynamic`), so /vi and /en never reference its files; snippets there fall back to system CJK fonts |
-| Typography  | `<Prose>` (`ui/primitives/Prose.tsx`) = `prose prose-tokens max-w-none`                                                                                                                                                                                                                                                                                                                                                                                                                                                        | @tailwindcss/typography; `prose-tokens` maps every `--tw-prose-*` to colour tokens, so it follows dark mode without `prose-invert`                                                                                                                                                                                                                    |
-| Motion      | `duration-fast` 120ms, `duration-normal` 200ms, `duration-slow` 320ms; `ease-standard`, `ease-emphasized` (enter), `ease-exit`; `animate-fade-in` (overlays), `animate-scale-in` (Dialog), `animate-slide-in` (Toast, menus); page motion: `animate-rise` + `stagger-<n>` (hero entrance), `reveal` (on scroll), `animate-float` (floating cards), `animate-grow-x`/`-y` (meters, bars), `animate-ring-fill`, `animate-marquee`, `animate-caret`, `scroll-raise` (sticky chrome); helpers `animation-paused`, `scrollbar-none` | `prefers-reduced-motion: reduce` removes animations, transitions and delays globally. `reveal` and `scroll-raise` are CSS scroll-driven: without support or with reduced motion the content simply shows. Put `reveal` on a wrapper, never on an element that also moves on hover (both own `translate`)                                              |
-| Z-index     | `z-base` 0, `z-dropdown` 10, `z-sticky` 20, `z-overlay` 40, `z-dialog` 50, `z-toast` 60, `z-tooltip` 70                                                                                                                                                                                                                                                                                                                                                                                                                        | low to high; a Select inside a Dialog passes `contentClassName="z-dialog"`                                                                                                                                                                                                                                                                            |
-| Breakpoints | `sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem, `2xl` 96rem                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Tailwind's defaults, declared in `@theme` so they are owned here. Design for 375px first                                                                                                                                                                                                                                                              |
-| Radius      | `rounded-control` 0.5rem, `rounded-card` 1rem, `rounded-dialog` 1.5rem (also the `TintCard`)                                                                                                                                                                                                                                                                                                                                                                                                                                   | Large and soft, as in the reference cards. `rounded-full` only for things that are circles (avatars, a play button, a dot) and the pill buttons inside the closing banner                                                                                                                                                                             |
-| Shadow      | none: `shadow-raised` and `shadow-float` are `none`                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | The look is solid colour blocks, borders and large radii; no component adds a shadow                                                                                                                                                                                                                                                                  |
+| Family      | Tokens (utility)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Notes                                                                                                                                                                                                                                                                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Colour      | `canvas`, `surface`, `surface-raised/-warm/-hover/-sunken`, `fg`, `fg-muted/-subtle/-brand`, `brand`, `brand-hover`, `on-brand`, `danger(-subtle)`, `on-danger`, `success(-subtle)`, `warning(-subtle)`, `info(-subtle)`, `border`, `border-strong`, `ring`, `overlay`, `on-overlay` (text over photos and scrims) (`bg-*`, `text-*`, `border-*`...)                                                                                                                                                                                                                     | values in `tokens.css`; the default palette is removed                                                                                                                                                                                                                                                                                                |
+| Font        | `font-sans` (Inter -> system), `font-cjk` (Noto Sans SC -> PingFang SC, Hiragino Sans GB, Microsoft YaHei -> system), `font-mono` (JetBrains Mono -> system mono)                                                                                                                                                                                                                                                                                                                                                                                                        | next/font self-hosts the files at build (no runtime Google request). Body uses `font-sans`; `:lang(zh)` (zh pages and `lang="zh"` snippets on vi/en pages) uses `font-cjk`. Noto Sans SC is loaded only on zh pages (`ZhFontLoader`, a client `next/dynamic`), so /vi and /en never reference its files; snippets there fall back to system CJK fonts |
+| Typography  | `<Prose>` (`ui/primitives/Prose.tsx`) = `prose prose-tokens max-w-none`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | @tailwindcss/typography; `prose-tokens` maps every `--tw-prose-*` to colour tokens, so it follows dark mode without `prose-invert`                                                                                                                                                                                                                    |
+| Motion      | `duration-fast` 120ms, `duration-normal` 200ms, `duration-slow` 320ms; `ease-standard`, `ease-emphasized` (enter), `ease-exit`; `animate-fade-in` (overlays), `animate-scale-in` (Dialog), `animate-slide-in` (Toast, menus); page motion: `animate-rise` + `stagger-<n>` (hero entrance), `reveal` (on scroll), `animate-float` (floating cards), `animate-drift-*` (closed sticker paths), `animate-grow-x`/`-y` (meters, bars), `animate-ring-fill`, `animate-marquee`, `animate-caret`, `scroll-raise` (sticky chrome); helpers `animation-paused`, `scrollbar-none` | `prefers-reduced-motion: reduce` removes animations, transitions and delays globally. `reveal` and `scroll-raise` are CSS scroll-driven: without support or with reduced motion the content simply shows. Put `reveal` on a wrapper, never on an element that also moves on hover (both own `translate`)                                              |
+| Z-index     | `z-base` 0, `z-dropdown` 10, `z-sticky` 20, `z-overlay` 40, `z-dialog` 50, `z-toast` 60, `z-tooltip` 70                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | low to high; a Select inside a Dialog passes `contentClassName="z-dialog"`                                                                                                                                                                                                                                                                            |
+| Breakpoints | `sm` 40rem, `md` 48rem, `lg` 64rem, `xl` 80rem, `2xl` 96rem                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Tailwind's defaults, declared in `@theme` so they are owned here. Design for 375px first                                                                                                                                                                                                                                                              |
+| Radius      | `rounded-control` 0.5rem, `rounded-card` 1rem, `rounded-dialog` 1.5rem (also the `TintCard`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Large and soft, as in the reference cards. `rounded-full` only for things that are circles (avatars, a play button, a dot) and the pill buttons inside the closing banner                                                                                                                                                                             |
+| Shadow      | none: `shadow-raised` and `shadow-float` are `none`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | The look is solid colour blocks, borders and large radii; no component adds a shadow                                                                                                                                                                                                                                                                  |
 
 Adding a token: put the value in `tokens.css` (colours) or the `@theme` block (others), add a
 `@utility` in `globals.css` when Tailwind has no theme namespace for it (z-index, duration), and
@@ -461,10 +461,12 @@ raise budgets; record intended growth with `npm run budget:check -- --update` in
 handlers in `mocks/<d>.handlers.ts`, a seed in `mocks/<d>.seed.ts`, a domain in `mocks/domains.ts` and
 its group in `mocks/routes.ts`.
 
-**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state with
-`screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add the path
-to `ROUTES`; add a message namespace if needed (all three locales); add analytics events to
-`shared/lib/analytics.ts` if the feature needs them.
+**A feature** `features/<f>/<group>/`: components that call entity hooks; derive the screen state
+with `screenStateOf`; add a route `app/[locale]/<path>/page.tsx` that only renders the feature; add
+the path to the feature's `shared/constants/routes/<domain>.routes.ts` (one `<DOMAIN>_ROUTES` object
+per file, no combined object or barrel; a new domain gets a new file); add a message namespace if
+needed (all three locales); add analytics events to `shared/lib/analytics.ts` if the feature needs
+them.
 
 **A locale**: add it to `LOCALES` and `INTL_LOCALES` in `i18n/routing.ts`, create
 `messages/<locale>/` with every namespace, add its name to `common.locale` in every locale, run
@@ -519,7 +521,7 @@ upgrade --from <old version> --apply run after a dependency bump
 
 ## This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notifications.
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 

@@ -7,7 +7,7 @@ import { PUBLISH_CHECK_STATES, type PublishCheckState } from "@/entities/learnin
 import { PUBLISH_CHECKS, STUDIO_COURSE } from "@/entities/learning/studio.fixtures";
 import type { PublishCheck } from "@/entities/learning/studio.types";
 import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/shared/constants/routes";
+import { STUDIO_ROUTES } from "@/shared/constants/routes/studio.routes";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { cn } from "@/ui/lib/cn";
@@ -46,7 +46,7 @@ export function PublishPreflightPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 md:px-6">
       <Link
-        href={ROUTES.studioCourse(course.slug)}
+        href={STUDIO_ROUTES.studioCourse(course.slug)}
         className="flex items-center gap-1 text-sm text-fg-muted hover:text-fg"
       >
         <Icon icon={ArrowLeft} size="sm" />

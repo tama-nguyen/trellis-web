@@ -147,11 +147,19 @@
     "languageChip": "{language} ({count})",
     "facet": "{label} ({count})",
     "enrol": "Enrol",
+    "enrolledStatus": "Enrolled",
     "viewCourse": "View Course",
     "save": "Save course",
     "unsave": "Remove from saved",
     "emptyTitle": "No courses match these filters",
-    "emptyDescription": "Clear a filter or search for another topic."
+    "emptyDescription": "Clear a filter or search for another topic.",
+    "statusLabel": "Course status",
+    "allStatuses": "All statuses",
+    "statuses": {
+      "ACTIVE": "Active",
+      "DRAFT": "Draft",
+      "ARCHIVED": "Archived"
+    }
   },
   "player": {
     "breadcrumbLabel": "Breadcrumb",
@@ -632,6 +640,8 @@
   "progressPage": {
     "title": "Progress",
     "description": "Where you are across every course you are enrolled in.",
+    "overallTitle": "Overall completion",
+    "coursesCount": "{count, plural, one {# course} other {# courses}}",
     "coursesEnrolled": "Courses enrolled",
     "lessonsCompleted": "Lessons completed",
     "lessonsOf": "{done} of {total}",
