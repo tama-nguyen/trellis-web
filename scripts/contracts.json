@@ -4,5 +4,6 @@
   "version": "0.1.0",
   "published": false,
   "generatedDirs": ["src/shared/api/generated"],
-  "schemaRevision": "3b7ea3af11ca4568a26e45b90985ccc6aec1aeed"
+  "schemaRepository": "tama-nguyen/trellis-backend",
+  "schemaRevision": "0b8f1015a2d6651ff07966f4f675f05aaa622adb"
 }

@@ -73,7 +73,8 @@ built image can serve every environment.
 
 ## Quality gate
 
-Run this before pushing; CI ([.gitlab-ci.yml](.gitlab-ci.yml)) runs the same scripts.
+Run this before pushing; [GitHub CI](.github/workflows/ci.yml) runs the same scripts.
+See [CI setup](docs/ci.md) for the manual `run_tests` switch and required checks.
 
 ```bash
 npm run contracts:check && npm run typecheck && npm run lint && npm run format:check \

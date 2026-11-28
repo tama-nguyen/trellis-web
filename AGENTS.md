@@ -16,6 +16,9 @@ Trellis holds **no business domain**: only the platform skeleton and one tiny sa
 
 Tool versions are pinned in `mise.toml` (`mise install`); `.nvmrc` mirrors the Node version for nvm.
 
+CI reads runtime/tool versions from these files and `package.json.packageManager`; do not repeat
+them in workflow YAML. Pin action dependencies by full SHA and update them through Dependabot.
+
 ## Code standards
 
 - **Comments explain why**: an external constraint, a warning, a reference. Never restate the code.
@@ -78,7 +81,8 @@ HTTP is native `fetch` behind one client; no axios, no second client.
 | `npm run contracts:check`         | This app and `@trellis/contracts` agree on a version (see below)                     |
 
 Gate before pushing: `npm run contracts:check && npm run typecheck && npm run lint && npm run format:check && npm test && npm run i18n:check && npm run build && npm run budget:check`.
-CI (`.gitlab-ci.yml`) runs exactly these scripts, nothing reimplemented.
+CI (`.github/workflows/ci.yml`) runs these scripts; setup and the manual `run_tests` switch are
+documented in `docs/ci.md`.
 
 ## Agent tooling
 
@@ -158,15 +162,15 @@ component -> entity hook (<d>.queries.ts) -> entity api (<d>.api.ts)
 
 **Web generates UI operation types.** `contracts/` belongs to `trellis-backend`, because the
 backend produces the OpenAPI document and the GraphQL schema. Its pipeline runs the generators and
-publishes one npm package to the GitLab Package Registry of that project; this repo installs it at
+builds one npm package as an artifact; registry publication is deferred. This repo will install it at
 a pinned, exact version and never copies a schema.
 
-| Thing                               | Where it comes from                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------ |
-| Package                             | `@trellis/contracts` (OpenAPI client and GraphQL schema)                       |
-| Registry                            | trellis-backend's GitLab Package Registry, configured in `.npmrc`              |
-| Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                 |
-| Credentials                         | env only: `$CI_JOB_TOKEN` in CI, a `read_api` PAT locally. **Never committed** |
+| Thing                               | Where it comes from                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------------------ |
+| Package                             | `@trellis/contracts` (OpenAPI client and GraphQL schema)                             |
+| Registry                            | Deferred until backend package publication; current CI uses committed snapshots      |
+| Version this app is written against | `scripts/contracts.json`, checked by `npm run contracts:check`                       |
+| Credentials                         | No registry credential needed in current build CI; future tokens stay in environment |
 
 The package name and version scheme are this repo's assumption until the backend publishes its
 first version; reconcile with `trellis-backend` before relying on them. Version scheme: plain
@@ -228,11 +232,10 @@ to the backend's stack, so there are exactly two ways to run the UI:
 
 ### CI
 
-`.gitlab-ci.yml` is self-contained (the monorepo pipeline stayed in `trellis-backend`): `lint`
-(contracts, typecheck, ESLint, Prettier, i18n parity), `build` (Next build + bundle budget), `test`
-(Vitest with Cobertura + JUnit), `image:build` and, on the default branch, `image:tag-main` and
-`cache:warm:npm`. MR pipelines tag images `mr<iid>-<sha>`, the default branch `sha-<sha>`; jobs are
-`interruptible` and read the npm cache, which only the default branch writes.
+`.github/workflows/ci.yml` verifies source, contracts, Vitest, production
+build, bundle budget and local Docker packaging. Automatic events run tests; manual dispatch can
+set `run_tests=false`. No images/packages are published or deployed. Tool versions come from
+`mise.toml` and package manifests. Setup and limitations: [docs/ci.md](docs/ci.md).
 
 ## Mock backend
 
